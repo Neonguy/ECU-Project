@@ -1,6 +1,6 @@
 <?php
 // This code checks if the $_POST variable (which contains form data submitted using the POST method)
-// contains a key of 'submit' (the name of the submit button), and if so it prints the form data.
+// contains a key of 'submit' (the name of the submit button), and if so it prints the form data. 
 if ($_POST)
 {
   echo '<h3>Form submitted successfully!</strong></h3>';
