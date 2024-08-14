@@ -101,6 +101,55 @@
 			exit();
 		}
 	}
+	// Check if the form has been submitted
+	if ($_POST && $_POST['bandSelect']&& $_POST['venueSelect']&& $_POST['concert_date']) 
+	{
+		// Get the venue name from the form
+		$band_id = trim($_POST['bandSelect']);
+		$venue_id = trim($_POST['venueSelect']);
+		$concert_date = trim($_POST['concert_date']);
+
+		// Check if the venue name is not empty
+		if (!empty($band_id) && !empty($venue_id) && !empty($concert_date)) 
+		{
+			try 
+			{
+				// Prepare the SQL statement to insert the concert details
+				$stmt = $db->prepare("INSERT INTO concert (band_id, venue_id, concert_date) VALUES (:band_id, :venue_id, :concert_date)");
+
+				// Bind the parameters to the SQL query
+				$stmt->bindParam(':band_id', $band_id);
+				$stmt->bindParam(':venue_id', $venue_id);
+				$stmt->bindParam(':concert_date', $concert_date);
+
+				// Execute the query
+				if ($stmt->execute()) 
+				{
+					// Redirect to AdminSection.php with a success message
+					header("Location: AdminSection.php?status=success");
+					exit();
+				} 
+				else 
+				{
+					// Redirect to AdminSection.php with an error message
+					header("Location: AdminSection.php?status=error");
+					exit();
+				}
+			} 
+			catch (PDOException $e) 
+			{
+				// Redirect to AdminSection.php with an error message
+				header("Location: AdminSection.php?status=error");
+				exit();
+			}
+		} 
+		else 
+		{
+			// Redirect to AdminSection.php with a validation message
+			header("Location: AdminSection.php?status=empty");
+			exit();
+		}
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -207,10 +256,43 @@
                     </div>
                 </div>
                 <div id="concert" class="layout">
+                    <div class="current-bands">
+                        <center>
+                        <h2>Current Concerts</h2>
+                        </center>
+                        <ul>
+                            <?php
+								$result = $db->query("
+									SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date
+									FROM concert c
+									JOIN band b ON c.band_id = b.band_id
+									JOIN venue v ON c.venue_id = v.venue_id
+									ORDER BY c.concert_id
+								");
+
+								if ($result && $result->rowCount() > 0) {
+									foreach ($result as $row) {
+										echo '<li><div class="label"><center>' . $row['band_name'] . '</center>';
+										echo '<center>' . $row['venue_name'] . '</center>';
+										echo '<center>' . $row['concert_date'] . '</center></div>';
+										echo '<div class="actions">';
+										echo '<button>Delete</button>';
+										echo '</div></li>';
+									}
+								} else {
+									echo '<li><div class="label">No venues available</div></li>';
+								}
+							?>
+                        </ul>
+                    </div>
+				
+				
+				
                     <center><h2>Add New Concert</h2>
                     <div class="add-new-band">
-                        <form id="addConcertForm" method="post" action="register.php" onsubmit="return validateConcert()">
-							<select name="band" required>
+                        <form id="addConcertForm" method="post" action="AdminSection.php" onsubmit="return validateConcert()">
+							<center>
+							<select name="bandSelect" required>
 								<option value=""selected disabled>Select a Band</option>
 								 <?php
 									$result = $db->query("Select * FROM band ORDER BY band_id");
@@ -223,7 +305,7 @@
 									}
 								?>
 							</select>
-							<select name="venue" required>
+							<select name="venueSelect" required>
 								<option value=""selected disabled>Select a Venue</option>
 								<?php
 									$result = $db->query("Select * FROM venue ORDER BY venue_id");
@@ -235,8 +317,10 @@
 										}
 									}
 								?>
+								</center>
 							</select>
-                            <input type="date" id="concertDate" name="concertDate" required><br><br>
+                            <input type="date" id="concert_date" name="concert_date" required>
+							</center>
                             <button type="submit">Add Concert</button>
                         </form>
                     </div>
@@ -284,15 +368,15 @@
 		function validateConcert() {
 			var doc = document.forms["addConcertForm"];
 
-			var bandName = doc.bandName.value;
+			var bandName = doc.bandSelect.value;
 			if (!bandName) {
-				alert("Please add a Band Name.");
+				alert("Please add a Band.");
 				return false;
 			}
 			
-			var venueName = doc.venueName.value;
+			var venueName = doc.venueSelect.value;
 			if (!venueName) {
-				alert("Please add a Venue Name.");
+				alert("Please add a Venue.");
 				return false;
 			}
 
