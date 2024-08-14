@@ -11,6 +11,6 @@ if ($_POST)
   print_r($_POST);
   echo '</pre>';
 }
-
+ 
 // If the form has not been submitted, the PHP doesn't do/display anything...
 ?>
