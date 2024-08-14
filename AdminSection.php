@@ -183,7 +183,7 @@
                     <ul>
                         <li>Manage Bands <input type="radio" name="menu" value="bands" onclick="changeLayout('bands')"></li>
                         <li>Manage Venues <input type="radio" name="menu" value="venues" onclick="changeLayout('venues')"></li>
-                        <li>Add Concert <input type="radio" name="menu" value="concert" onclick="changeLayout('concert')"></li>
+                        <li>Manage Concerts <input type="radio" name="menu" value="concert" onclick="changeLayout('concert')"></li>
                         <li><a href="#">Log Out</a></li>
                     </ul>
                 </center>
