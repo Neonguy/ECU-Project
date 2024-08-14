@@ -61,6 +61,7 @@ function validateForm() {
 					<input type="submit" class="submit-button" value="Submit">
 				</fieldset>
 			</form>
+			<button onclick="history.back()">Go Back</button>
 	</center>
 	</div>
 </body>
