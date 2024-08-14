@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 12, 2024 at 11:49 PM
+-- Generation Time: Aug 15, 2024 at 01:43 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -72,6 +72,14 @@ CREATE TABLE `band` (
 -- RELATIONSHIPS FOR TABLE `band`:
 --
 
+--
+-- Dumping data for table `band`
+--
+
+INSERT INTO `band` (`band_id`, `band_name`) VALUES
+(1, 'random1'),
+(3, 'random2');
+
 -- --------------------------------------------------------
 
 --
@@ -129,6 +137,13 @@ CREATE TABLE `venue` (
 --
 
 --
+-- Dumping data for table `venue`
+--
+
+INSERT INTO `venue` (`venue_id`, `venue_name`) VALUES
+(1, 'random venue');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -148,7 +163,8 @@ ALTER TABLE `attendee`
 -- Indexes for table `band`
 --
 ALTER TABLE `band`
-  ADD PRIMARY KEY (`band_id`);
+  ADD PRIMARY KEY (`band_id`),
+  ADD UNIQUE KEY `band_name` (`band_name`);
 
 --
 -- Indexes for table `booking`
@@ -170,7 +186,8 @@ ALTER TABLE `concert`
 -- Indexes for table `venue`
 --
 ALTER TABLE `venue`
-  ADD PRIMARY KEY (`venue_id`);
+  ADD PRIMARY KEY (`venue_id`),
+  ADD UNIQUE KEY `venue_name` (`venue_name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -180,7 +197,7 @@ ALTER TABLE `venue`
 -- AUTO_INCREMENT for table `band`
 --
 ALTER TABLE `band`
-  MODIFY `band_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `band_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `booking`
@@ -198,7 +215,7 @@ ALTER TABLE `concert`
 -- AUTO_INCREMENT for table `venue`
 --
 ALTER TABLE `venue`
-  MODIFY `venue_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `venue_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

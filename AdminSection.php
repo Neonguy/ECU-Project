@@ -1,3 +1,107 @@
+
+<?php
+	try
+	{
+		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
+	}
+	catch (PDOException $e)
+	{
+		echo '"error connecting to database server:<br/>';
+		echo $e->getMessage();
+		exit;
+	}
+	
+	// Check if the form has been submitted
+	if ($_POST && $_POST['bandName']) 
+	{
+		// Get the band name from the form
+		$bandName = trim($_POST['bandName']);
+
+		// Check if the band name is not empty
+		if (!empty($bandName)) 
+		{
+			try 
+			{
+				// Prepare the SQL statement to insert the band name
+				$stmt = $db->prepare("INSERT INTO band (band_name) VALUES (:band_name)");
+
+				// Bind the parameter to the SQL query
+				$stmt->bindParam(':band_name', $bandName);
+
+				// Execute the query
+				if ($stmt->execute()) 
+				{
+					// Redirect to AdminSection.php with a success message
+					header("Location: AdminSection.php?status=success");
+					exit();
+				} 
+				else 
+				{
+					// Redirect to AdminSection.php with an error message
+					header("Location: AdminSection.php?status=error");
+					exit();
+				}
+			} 
+			catch (PDOException $e) 
+			{
+				// Redirect to AdminSection.php with an error message
+				header("Location: AdminSection.php?status=error");
+				exit();
+			}
+		} 
+		else 
+		{
+			// Redirect to AdminSection.php with a validation message
+			header("Location: AdminSection.php?status=empty");
+			exit();
+		}
+	}
+	// Check if the form has been submitted
+	if ($_POST && $_POST['venueName']) 
+	{
+		// Get the venue name from the form
+		$venueName = trim($_POST['venueName']);
+
+		// Check if the venue name is not empty
+		if (!empty($venueName)) 
+		{
+			try 
+			{
+				// Prepare the SQL statement to insert the venue name
+				$stmt = $db->prepare("INSERT INTO venue (venue_name) VALUES (:venue_name)");
+
+				// Bind the parameter to the SQL query
+				$stmt->bindParam(':venue_name', $venueName);
+
+				// Execute the query
+				if ($stmt->execute()) 
+				{
+					// Redirect to AdminSection.php with a success message
+					header("Location: AdminSection.php?status=success");
+					exit();
+				} 
+				else 
+				{
+					// Redirect to AdminSection.php with an error message
+					header("Location: AdminSection.php?status=error");
+					exit();
+				}
+			} 
+			catch (PDOException $e) 
+			{
+				// Redirect to AdminSection.php with an error message
+				header("Location: AdminSection.php?status=error");
+				exit();
+			}
+		} 
+		else 
+		{
+			// Redirect to AdminSection.php with a validation message
+			header("Location: AdminSection.php?status=empty");
+			exit();
+		}
+	}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,16 +146,27 @@
                         <h2>Current Bands</h2>
                         </center>
                         <ul>
-                            <li><div class="label">Big Beats</div><div class="actions"><button>Edit</button><button>Delete</button></div></li>
-                            <li><div class="label">Kelly Roth</div><div class="actions"><button>Edit</button><button>Delete</button></div></li>
-                            <li><div class="label">The Boggletops</div><div class="actions"><button>Edit</button><button>Delete</button></div></li>
-                            <li><div class="label">The Ladder Coins</div><div class="actions"><button>Edit</button><button>Delete</button></div></li>
+                            <?php
+								$result = $db->query("SELECT * FROM band ORDER BY band_id");
+
+								if ($result && $result->rowCount() > 0) {
+									foreach ($result as $row) {
+										echo '<li><div class="label">' . $row['band_name'] . '</div>';
+										echo '<div class="actions">';
+										echo '<button>Edit</button>';
+										echo '<button>Delete</button>';
+										echo '</div></li>';
+									}
+								} else {
+									echo '<li><div class="label">No bands available</div></li>';
+								}
+							?>
                         </ul>
                     </div>
                     <div class="add-new-band">
                         <center>
                         <h2>Add New Band</h2>
-                        <form id="addBandForm" method="post" action="register.php" onsubmit="return validateBand()">
+                        <form id="addBandForm" method="post" action="AdminSection.php" onsubmit="return validateBand()">
                             <input type="text" id="bandName" name="bandName" placeholder="Band Name">
                             <button type="submit">Add Band</button>
                         </form>
@@ -64,15 +179,27 @@
                         <h2>Current Venues</h2>
                         </center>
                         <ul>
-                            <li><div class="label">Madison Square Garden</div><div class="actions"><button>Edit</button><button>Delete</button></div></li>
-                            <li><div class="label">Royal Albert Hall</div><div class="actions"><button>Edit</button><button>Delete</button></div></li>
-                            <li><div class="label">Sydney Opera House</div><div class="actions"><button>Edit</button><button>Delete</button></div></li>
+                            <?php
+								$result = $db->query("SELECT * FROM venue ORDER BY venue_id");
+
+								if ($result && $result->rowCount() > 0) {
+									foreach ($result as $row) {
+										echo '<li><div class="label">' . $row['venue_name'] . '</div>';
+										echo '<div class="actions">';
+										echo '<button>Edit</button>';
+										echo '<button>Delete</button>';
+										echo '</div></li>';
+									}
+								} else {
+									echo '<li><div class="label">No venues available</div></li>';
+								}
+							?>
                         </ul>
                     </div>
                     <div class="add-new-band">
                         <center>
                         <h2>Add New Venue</h2>
-                        <form id="addVenueForm" method="post" action="register.php" onsubmit="return validateVenue()">
+                        <form id="addVenueForm" method="post" action="AdminSection.php" onsubmit="return validateVenue()">
                             <input type="text" id="venueName" name="venueName" placeholder="Venue Name">
                             <button type="submit">Add Venue</button>
                         </form>
@@ -83,8 +210,32 @@
                     <center><h2>Add New Concert</h2>
                     <div class="add-new-band">
                         <form id="addConcertForm" method="post" action="register.php" onsubmit="return validateConcert()">
-                            <input type="text" id="bandName" name="bandName" placeholder="Band Name">
-                            <input type="text" id="venueName" name="venueName" placeholder="Venue Name">
+							<select name="band" required>
+								<option value=""selected disabled>Select a Band</option>
+								 <?php
+									$result = $db->query("Select * FROM band ORDER BY band_id");
+									if ($result && $result->rowCount() > 0) 
+									{
+										foreach ($result as $row)
+										{
+											echo '<option value="'.$row['band_id'].'">',$row['band_name'].'</option>';
+										}
+									}
+								?>
+							</select>
+							<select name="venue" required>
+								<option value=""selected disabled>Select a Venue</option>
+								<?php
+									$result = $db->query("Select * FROM venue ORDER BY venue_id");
+									if ($result && $result->rowCount() > 0) 
+									{
+										foreach ($result as $row)
+										{
+											echo '<option value="'.$row['venue_id'].'">',$row['venue_name'].'</option>';
+										}
+									}
+								?>
+							</select>
                             <input type="date" id="concertDate" name="concertDate" required><br><br>
                             <button type="submit">Add Concert</button>
                         </form>
