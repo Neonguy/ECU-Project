@@ -203,14 +203,6 @@ h1 {
 	margin-top: 20px;
 }
 
-.add-new-band input {
-	padding: 8px;
-	margin-right: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	flex-grow: 1;
-}
-
 .add-new-band button {
     background-color: blue;
     color: white;
