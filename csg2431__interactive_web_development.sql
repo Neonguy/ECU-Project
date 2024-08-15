@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 15, 2024 at 02:20 PM
+-- Generation Time: Aug 15, 2024 at 07:08 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -62,9 +62,15 @@ CREATE TABLE `attendee` (
 --
 
 INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`) VALUES
-('0413062101', 'a', 'a', '12345678'),
-('0413062102', 'a', 'a', '12345678'),
-('14204114414', 'a', '1', '12345678');
+('0402413949', 'Ethan', 'Hunter', '12345678'),
+('0402445747', 'Steven', 'Miller', '12345678'),
+('0402449784', 'Amanda', 'Hill', '12345678'),
+('0403215486', 'Raymond', 'Price', '12345678'),
+('0404477819', 'Mark', 'Griffin', '12345678'),
+('0405413987', 'Natalie', 'Brooks', '12345678'),
+('0405896324', 'Sarah', 'Collier', '12345678'),
+('0406649884', 'Rachel', 'Stark', '12345678'),
+('0407788149', 'Jessica', 'Bell', '12345678');
 
 -- --------------------------------------------------------
 
@@ -86,9 +92,16 @@ CREATE TABLE `band` (
 --
 
 INSERT INTO `band` (`band_id`, `band_name`) VALUES
-(4, 'abc561'),
-(7, 'dvb'),
-(5, 'vfhbf');
+(19, 'Baby Animals'),
+(16, 'Birds of Tokyo'),
+(18, 'Eskimo Joe'),
+(14, 'Gyroscope'),
+(15, 'Jebediah'),
+(22, 'Karnivool'),
+(21, 'Little Birdy'),
+(23, 'Pendulum'),
+(17, 'Pond'),
+(20, 'The Sleepy Jackson');
 
 -- --------------------------------------------------------
 
@@ -136,8 +149,9 @@ CREATE TABLE `concert` (
 --
 
 INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`) VALUES
-(4, 4, 3, '2024-08-09'),
-(6, 4, 2, '2024-08-31');
+(11, 15, 7, '2024-09-28'),
+(12, 16, 5, '2024-11-02'),
+(13, 18, 6, '2024-11-22');
 
 -- --------------------------------------------------------
 
@@ -159,8 +173,12 @@ CREATE TABLE `venue` (
 --
 
 INSERT INTO `venue` (`venue_id`, `venue_name`) VALUES
-(3, 'asdfsdfg'),
-(2, 'SDFGDSF12');
+(9, 'Astor Theatre Perth'),
+(8, 'Crown Theatre Perth'),
+(10, 'HBF Arena'),
+(7, 'His Majesty\'s Theatre'),
+(6, 'Optus Stadium'),
+(5, 'Perth Concert Hall');
 
 --
 -- Indexes for dumped tables
@@ -216,7 +234,7 @@ ALTER TABLE `venue`
 -- AUTO_INCREMENT for table `band`
 --
 ALTER TABLE `band`
-  MODIFY `band_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `band_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `booking`
@@ -228,13 +246,13 @@ ALTER TABLE `booking`
 -- AUTO_INCREMENT for table `concert`
 --
 ALTER TABLE `concert`
-  MODIFY `concert_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `concert_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `venue`
 --
 ALTER TABLE `venue`
-  MODIFY `venue_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `venue_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
