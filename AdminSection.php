@@ -161,7 +161,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free-Gigs</title>
+    <title>Events Listing</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         .layout {
@@ -180,7 +180,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Free-Gigs, the Free Concert Website!</h1>
+        <h1>Welcome to Events Listing, the Free Event Website!</h1>
         <div class="content">
             <section class="admin-area">
                 <center>
