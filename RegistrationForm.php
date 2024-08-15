@@ -1,5 +1,17 @@
 
 <?php
+	$confirmationMessage = '';
+	
+	if (isset($_GET['status'])) {
+		if ($_GET['status'] == 'success') {
+			$confirmationMessage = 'Registration Successful.';
+		} elseif ($_GET['status'] == 'error') {
+			$confirmationMessage = 'Registration Failed.';
+		} elseif ($_GET['status'] == 'empty') {
+			$confirmationMessage = 'Please fill in all required fields.';
+		}
+	}
+	
 	try
 	{
 		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
@@ -105,6 +117,13 @@
 				</fieldset>
 			</form>
 			<button onclick="history.back()">Go Back</button>
+	<?php
+		// Display the confirmation message
+		if ($confirmationMessage) 
+		{
+			echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
+		}
+	?>
 	</center>
 	</div>
 </body>
