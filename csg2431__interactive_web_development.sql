@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 15, 2024 at 01:43 AM
+-- Generation Time: Aug 15, 2024 at 02:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -57,6 +57,15 @@ CREATE TABLE `attendee` (
 -- RELATIONSHIPS FOR TABLE `attendee`:
 --
 
+--
+-- Dumping data for table `attendee`
+--
+
+INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`) VALUES
+('0413062101', 'a', 'a', '12345678'),
+('0413062102', 'a', 'a', '12345678'),
+('14204114414', 'a', '1', '12345678');
+
 -- --------------------------------------------------------
 
 --
@@ -77,8 +86,9 @@ CREATE TABLE `band` (
 --
 
 INSERT INTO `band` (`band_id`, `band_name`) VALUES
-(1, 'random1'),
-(3, 'random2');
+(4, 'abc561'),
+(7, 'dvb'),
+(5, 'vfhbf');
 
 -- --------------------------------------------------------
 
@@ -121,6 +131,14 @@ CREATE TABLE `concert` (
 --       `venue` -> `venue_id`
 --
 
+--
+-- Dumping data for table `concert`
+--
+
+INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`) VALUES
+(4, 4, 3, '2024-08-09'),
+(6, 4, 2, '2024-08-31');
+
 -- --------------------------------------------------------
 
 --
@@ -141,7 +159,8 @@ CREATE TABLE `venue` (
 --
 
 INSERT INTO `venue` (`venue_id`, `venue_name`) VALUES
-(1, 'random venue');
+(3, 'asdfsdfg'),
+(2, 'SDFGDSF12');
 
 --
 -- Indexes for dumped tables
@@ -197,7 +216,7 @@ ALTER TABLE `venue`
 -- AUTO_INCREMENT for table `band`
 --
 ALTER TABLE `band`
-  MODIFY `band_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `band_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `booking`
@@ -209,13 +228,13 @@ ALTER TABLE `booking`
 -- AUTO_INCREMENT for table `concert`
 --
 ALTER TABLE `concert`
-  MODIFY `concert_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `concert_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `venue`
 --
 ALTER TABLE `venue`
-  MODIFY `venue_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `venue_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
