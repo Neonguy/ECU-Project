@@ -548,11 +548,15 @@
 								{
 									echo '<ul>';
 									foreach ($result as $row) 
-									{
+									{   
+										// Convert the date to Australian format (DD/MM/YYYY)
+										$concertDate = new DateTime($row['concert_date']);
+										$formattedDate = $concertDate->format('d/m/Y');
+										
 										echo '<li>';
 										echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
 										echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
-										echo '<center>' . htmlspecialchars($row['concert_date']) . '</center></div>';
+										echo '<center>' . htmlspecialchars($formattedDate) . '</center></div>';
 										echo '<div class="actions">';
 										echo '<form method="POST" style="display:inline;">';
 										echo '<input type="hidden" name="delete_concert_id" value="' . $row['concert_id'] . '">';
