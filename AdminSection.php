@@ -4,6 +4,7 @@
 	// Variable to track which band/venue is being edited
 	$editBandId = null; 
 	$editvenueId = null;
+	$editconcertId = null;
 	
 	try
 	{
@@ -109,18 +110,25 @@
 	// Check if the form has been submitted
 	if ($_POST && isset($_POST['bandSelect']) && isset($_POST['venueSelect']) && isset($_POST['concert_date'])) 
 	{
+		  
 		// Get the venue name from the form
 		$band_id = trim($_POST['bandSelect']);
 		$venue_id = trim($_POST['venueSelect']);
 		$concert_date = trim($_POST['concert_date']);
+		$concert_id = trim($_POST['concert_id']);
 
-		// Check if the venue name is not empty
-		if (!empty($band_id) && !empty($venue_id) && !empty($concert_date)) 
-		{
-			try 
-			{
-				// Prepare the SQL statement to insert the concert details
-				$stmt = $db->prepare("INSERT INTO concert (band_id, venue_id, concert_date) VALUES (:band_id, :venue_id, :concert_date)");
+		
+		// Check if required values are not empty
+		if (!empty($band_id) && !empty($venue_id) && !empty($concert_date)) {
+			try {
+				if (!empty($concert_id)) {
+					// If concert_id exists, update the existing concert details
+					$stmt = $db->prepare("UPDATE concert SET band_id = :band_id, venue_id = :venue_id, concert_date = :concert_date WHERE concert_id = :concert_id");
+					$stmt->bindParam(':concert_id', $concert_id);
+				} else {
+					// If concert_id does not exist, insert a new concert
+					$stmt = $db->prepare("INSERT INTO concert (band_id, venue_id, concert_date) VALUES (:band_id, :venue_id, :concert_date)");
+				}
 
 				// Bind the parameters to the SQL query
 				$stmt->bindParam(':band_id', $band_id);
@@ -176,6 +184,9 @@
         .actions button {
             margin-left: 10px;
         }
+		button[name=delete] {
+			background-color: red;
+		}
     </style>
 </head>
 <body>
@@ -502,10 +513,86 @@
                         </center>
                     </div>
                 </div>
+				
                 <div id="concert" class="layout">
+					<center>
+					<h2>
+					<?php 
+						// Handle edit button click (to track which band is being edited)
+						if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_concert_id'])) 
+						{
+							$editconcertId = intval($_POST['edit_concert_id']);
+						}
+						if ($editconcertId != null) 
+						{
+							echo 'Edit Concert ' . $editconcertId;
+						}
+						else
+						{
+							echo 'Add New Concert';
+						}
+					?>
+					</h2>
+                    <div class="add-new-band">
+                        <form id="addConcertForm" method="post" action="AdminSection.php" onsubmit="return validateConcert()">
+							<select name="bandSelect" required>
+								<option value=""selected disabled>Select a Band</option>
+								 <?php
+									$result = $db->query("Select * FROM band ORDER BY band_id");
+									if ($result && $result->rowCount() > 0) 
+									{
+										foreach ($result as $row)
+										{
+											echo '<option value="'.$row['band_id'].'">',$row['band_name'].'</option>';
+										}
+									}
+								?>
+							</select>
+							<select name="venueSelect" required>
+								<option value=""selected disabled>Select a Venue</option>
+								<?php
+									$result = $db->query("Select * FROM venue ORDER BY venue_id");
+									if ($result && $result->rowCount() > 0) 
+									{
+										foreach ($result as $row)
+										{
+											echo '<option value="'.$row['venue_id'].'">',$row['venue_name'].'</option>';
+										}
+									}
+								?>
+							</select>
+                            <input type="date" id="concert_date" name="concert_date" required>
+							
+							
+							<?php 
+								if ($editconcertId == null) 
+								{
+									echo '<button type="submit">Add Concert</button>';
+								}
+								else
+								{
+									echo '<input type="hidden" name="concert_id" value="' . $editconcertId . '">';
+									echo '<button type="submit">Save Concert</button>';
+								}
+							?>
+                        </form>
+                    </div>
+					</center>
+					
                     <div class="current-bands">
                         <center>
-                        <h2>Current Concerts</h2>
+                        <h2>
+						<?php 
+							if ($editconcertId == null) 
+							{
+								echo 'Current Concerts';
+							}
+							else
+							{
+							}
+						
+						?>
+						</h2>
                         </center>
                         <ul>
                             <?php
@@ -535,85 +622,57 @@
 									}
 								}
 
-								// Fetch and display concert details
-								$result = $db->query("
-									SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date
-									FROM concert c
-									JOIN band b ON c.band_id = b.band_id
-									JOIN venue v ON c.venue_id = v.venue_id
-									ORDER BY c.concert_id
-								");
+								if ($editconcertId == null) 
+								{
+									// Fetch and display concert details
+									$result = $db->query("
+										SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date
+										FROM concert c
+										JOIN band b ON c.band_id = b.band_id
+										JOIN venue v ON c.venue_id = v.venue_id
+										ORDER BY c.concert_id
+									");
 
-								if ($result && $result->rowCount() > 0) 
-								{
-									echo '<ul>';
-									foreach ($result as $row) 
-									{   
-										// Convert the date to Australian format (DD/MM/YYYY)
-										$concertDate = new DateTime($row['concert_date']);
-										$formattedDate = $concertDate->format('d/m/Y');
-										
-										echo '<li>';
-										echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
-										echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
-										echo '<center>' . htmlspecialchars($formattedDate) . '</center></div>';
-										echo '<div class="actions">';
-										echo '<form method="POST" style="display:inline;">';
-										echo '<input type="hidden" name="delete_concert_id" value="' . $row['concert_id'] . '">';
-										echo '<button name="delete">Delete</button>';
-										echo '</form>';
-										echo '</div>';
-										echo '</li>';
+									if ($result && $result->rowCount() > 0) 
+									{
+										echo '<ul>';
+										foreach ($result as $row) 
+										{   
+											// Convert the date to Australian format (DD/MM/YYYY)
+											$concertDate = new DateTime($row['concert_date']);
+											$formattedDate = $concertDate->format('d/m/Y');
+											
+											echo '<li>';
+											echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
+											echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
+											echo '<center>' . htmlspecialchars($formattedDate) . '</center></div>';
+											
+											echo '<div class="actions">';
+											
+												// Edit button
+												echo '<form method="POST" style="display:inline;">';
+												echo '<input type="hidden" name="edit_concert_id" value="' . $row['concert_id'] . '">';
+												echo '<button name="edit">Edit</button>';
+												echo '</form>';
+												
+												// Delete button
+												echo '<form method="POST" style="display:inline;">';
+												echo '<input type="hidden" name="delete_concert_id" value="' . $row['concert_id'] . '">';
+												echo '<button name="delete">Delete</button>';
+												echo '</form>';
+											echo '</div>';
+											echo '</li>';
+										}
+										echo '</ul>';
+									} 
+									else 
+									{
+										echo '<li><div class="label">No concerts available</div></li>';
 									}
-									echo '</ul>';
-								} 
-								else 
-								{
-									echo '<li><div class="label">No concerts available</div></li>';
 								}
 							?>
                         </ul>
                     </div>
-				
-				
-				
-                    <center><h2>Add New Concert</h2>
-                    <div class="add-new-band">
-                        <form id="addConcertForm" method="post" action="AdminSection.php" onsubmit="return validateConcert()">
-							<center>
-							<select name="bandSelect" required>
-								<option value=""selected disabled>Select a Band</option>
-								 <?php
-									$result = $db->query("Select * FROM band ORDER BY band_id");
-									if ($result && $result->rowCount() > 0) 
-									{
-										foreach ($result as $row)
-										{
-											echo '<option value="'.$row['band_id'].'">',$row['band_name'].'</option>';
-										}
-									}
-								?>
-							</select>
-							<select name="venueSelect" required>
-								<option value=""selected disabled>Select a Venue</option>
-								<?php
-									$result = $db->query("Select * FROM venue ORDER BY venue_id");
-									if ($result && $result->rowCount() > 0) 
-									{
-										foreach ($result as $row)
-										{
-											echo '<option value="'.$row['venue_id'].'">',$row['venue_name'].'</option>';
-										}
-									}
-								?>
-								</center>
-							</select>
-                            <input type="date" id="concert_date" name="concert_date" required>
-							</center>
-                            <button type="submit">Add Concert</button>
-                        </form>
-                    </div>
-					</center>
                 </div>
             </section>
         </div>
@@ -714,8 +773,16 @@
 				alert("Please add a Venue.");
 				return false;
 			}
+			
+			var concert_date = new Date(doc.concert_date.value);
+			var current_date = new Date();
 
-
+			// Check if the concert date is in the past or today
+			if (concert_date <= current_date) {
+				alert("Please select a future date for the concert.");
+				return false;
+			}
+			
 			return true;
 		}
 	</script>
