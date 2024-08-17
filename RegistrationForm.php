@@ -74,7 +74,8 @@
 			exit();
 		}
 	}
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -82,15 +83,15 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         
-		input[type=password] {
+		input[type=text], input[type=password] {
 			width: 70%; 
 			margin: 3px; 
 			box-sizing: border-box;
 			text-align: center;
 		}
-		.submit-button { 
+		button[type=submit] { 
 			width: 30%; 
-			background-color: #4CAF50; 
+			background-color: green; 
 			color: white; 
 			padding: 10px; 
 			margin: 10px; 
@@ -113,7 +114,7 @@
 					<input type="password" name="confirm_password" placeholder="Confirm Password">
 					
 				</center>
-					<input type="submit" class="submit-button" value="Submit">
+                    <button type="submit">Register</button>
 				</fieldset>
 			</form>
 			<button onclick="history.back()">Go Back</button>

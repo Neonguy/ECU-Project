@@ -67,14 +67,6 @@ section {
     background-color: darkblue;
 }
 
-input[type="text"] {
-    width: calc(100% - 22px);
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
 button[type="submit"] {
     width: 100%;
     background-color: green;
@@ -118,19 +110,15 @@ input[type=text], input[type=password], input[type=date], select {
 }
 
 .submit-button { 
-    background-color: #4CAF50; 
-    color: white; 
-    padding: 10px 20px; 
-    border: none; 
-    border-radius: 4px; 
-    cursor: pointer; 
+	width: 30%; 
+	background-color: #4CAF50; 
+	color: white; 
+	padding: 10px; 
+	margin: 10px; 
+	border-radius: 5px; 
+	cursor: pointer; 
 }
-input[type=text], input[type=password], input[type=date], select {
-    width: 70%; 
-    padding: 8px; 
-    box-sizing: border-box;
-    text-align: center;
-}
+
 li button {
 	margin-left: 10px; /* Add space between buttons */
 }
@@ -204,7 +192,8 @@ h1 {
 }
 
 .add-new-band button {
-    background-color: blue;
+	width: 50%; 
+    background-color: green;
     color: white;
     text-decoration: none;
     padding: 5px 10px;
