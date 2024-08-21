@@ -1,22 +1,13 @@
 
 <?php
+	require 'db_connect.php';
+	
 	$confirmationMessage = '';
 	// Variable to track which band/venue is being edited
 	$editBandId = null; 
 	$editvenueId = null;
 	$editconcertId = null;
-	
-	try
-	{
-		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
-	}
-	catch (PDOException $e)
-	{
-		echo '"error connecting to database server:<br/>';
-		echo $e->getMessage();
-		exit;
-	}
-	
+
 	// Check if the form has been submitted
 	if ($_POST && isset($_POST['bandName']))
 	{

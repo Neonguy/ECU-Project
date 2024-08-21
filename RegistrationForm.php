@@ -1,5 +1,7 @@
 
 <?php
+	require 'db_connect.php';
+	
 	$confirmationMessage = '';
 	
 	if (isset($_GET['status'])) {
@@ -11,18 +13,7 @@
 			$confirmationMessage = 'Please fill in all required fields.';
 		}
 	}
-	
-	try
-	{
-		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
-	}
-	catch (PDOException $e)
-	{
-		echo 'error connecting to database server:<br/>';
-		echo $e->getMessage();
-		exit;
-	}
-	
+		
 	// Check if the form has been submitted
 	if ($_POST && isset($_POST['mobile_number']) && isset($_POST['first_name']) && isset($_POST['surname']) && isset($_POST['password'])) 
 	{
