@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendee Portal</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles1.css">
+
     <style>
                 /*-- overide css --> */
     </style>
@@ -23,9 +24,9 @@
             <section class="edit-area">
                 <!-- need to modify right hand box size in css -->                
                 <center>
-                <h2>Upcoming Concerts:</h2>
+                <h3>Upcoming Concerts:</h3>
                 <!-- retrieve upcoming concerts from database -->
-                <h2>Your Bookings:</h2>
+                <h3>Your Bookings:</h3>
                 <!-- retrieve login bookings from database -->
                 <center>
             </section>

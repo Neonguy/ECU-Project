@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Public Home Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles1.css">
     <style>
 		input[type=text], input[type=mobile] {
 			width: 50%; 
@@ -37,8 +37,8 @@
             </section>
             <section class="edit-area">
                 <!-- need to modify right hand box size in css -->  
-                <center>
-                    <h2>Upcoming Concerts:</h2>
+                </center>
+                    <h3>Upcoming Concerts:</h3>
 		           <!-- retrieve upcoming concerts from database -->
                 </center>
             </section>
