@@ -1,3 +1,6 @@
+<?php
+	require 'db_connect.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,9 +19,19 @@
         <div class="content">
             <section class="admin-area">
                 <center>
-					<p><i>You are logged in as<i></p>
-                    <!-- retrieve name from database -->
-					<a href="#">Log Out</a>
+			
+					<?php
+						if ($username != '') {
+							echo '<p><i>You are logged in as ' . $username . '<i></p>';
+							echo '<button name="logout" href="#">Log Out</button>';
+						}
+						else
+						{
+							echo '<p><i>You are not logged in.<i></p>';
+							echo '<button name="login"a href="#">Log In</button>';
+							
+						}
+					?>
                 </center>
             </section>
             <section class="edit-area">

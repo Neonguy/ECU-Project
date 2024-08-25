@@ -2,6 +2,7 @@
   // This file will be included at the start of all other files in the site
   // It includes code to connect to the database server, but could be expanded
   // to include other things that are needed across multiple files in the site!
+	$username = 'jbloggs';
 
   // Connect to database server
   try
