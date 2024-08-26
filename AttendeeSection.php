@@ -22,12 +22,12 @@
 			
 					<?php
 						if ($username != '') {
-							echo '<p><i>You are logged in as ' . $username . '<i></p>';
+							echo '<p><i>You are logged in as ' . $username . '</i></p>';
 							echo '<button name="logout" href="#">Log Out</button>';
 						}
 						else
 						{
-							echo '<p><i>You are not logged in.<i></p>';
+							echo '<p><i>You are not logged in.</i></p>';
 							echo '<button name="login"a href="#">Log In</button>';
 							
 						}
