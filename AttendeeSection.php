@@ -43,6 +43,9 @@
                 <!-- retrieve login bookings from database -->
                 <center>
             </section>
+		</div>
+	</div>
+	
     <script>
                 /*-- validation alerts --> */
 	</script>
