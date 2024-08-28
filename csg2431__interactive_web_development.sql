@@ -30,9 +30,7 @@ USE `csg2431: interactive web development`;
 --
 
 CREATE TABLE `admin` (
-  `mobile_number` varchar(255) NOT NULL,
-  `first_name` varchar(255) DEFAULT NULL,
-  `surname` varchar(255) DEFAULT NULL,
+  `username` varchar(255) NOT NULL,
   `password` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
@@ -50,7 +48,8 @@ CREATE TABLE `attendee` (
   `mobile_number` varchar(255) NOT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `surname` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
+  `password` varchar(255) DEFAULT NULL,
+  `dob` DATE NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -61,16 +60,16 @@ CREATE TABLE `attendee` (
 -- Dumping data for table `attendee`
 --
 
-INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`) VALUES
-('0402413949', 'Ethan', 'Hunter', '12345678'),
-('0402445747', 'Steven', 'Miller', '12345678'),
-('0402449784', 'Amanda', 'Hill', '12345678'),
-('0403215486', 'Raymond', 'Price', '12345678'),
-('0404477819', 'Mark', 'Griffin', '12345678'),
-('0405413987', 'Natalie', 'Brooks', '12345678'),
-('0405896324', 'Sarah', 'Collier', '12345678'),
-('0406649884', 'Rachel', 'Stark', '12345678'),
-('0407788149', 'Jessica', 'Bell', '12345678');
+INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`, `dob`) VALUES
+('0402413949', 'Ethan', 'Hunter', '12345678', '2024-09-28'),
+('0402445747', 'Steven', 'Miller', '12345678', '2024-09-28'),
+('0402449784', 'Amanda', 'Hill', '12345678', '2024-09-28'),
+('0403215486', 'Raymond', 'Price', '12345678', '2024-09-28'),
+('0404477819', 'Mark', 'Griffin', '12345678', '2024-09-28'),
+('0405413987', 'Natalie', 'Brooks', '12345678', '2024-09-28'),
+('0405896324', 'Sarah', 'Collier', '12345678', '2024-09-28'),
+('0406649884', 'Rachel', 'Stark', '12345678', '2024-09-28'),
+('0407788149', 'Jessica', 'Bell', '12345678', '2024-09-28');
 
 -- --------------------------------------------------------
 
@@ -79,8 +78,9 @@ INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`) VA
 --
 
 CREATE TABLE `band` (
-  `band_id` int(10) UNSIGNED NOT NULL,
-  `band_name` varchar(255) DEFAULT NULL
+  `band_id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `band_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`band_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -110,9 +110,10 @@ INSERT INTO `band` (`band_id`, `band_name`) VALUES
 --
 
 CREATE TABLE `booking` (
-  `booking_id` int(10) UNSIGNED NOT NULL,
+  `booking_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `mobile_number` varchar(255) DEFAULT NULL,
-  `concert_id` int(10) UNSIGNED DEFAULT NULL
+  `concert_id` int(10) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`booking_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -131,9 +132,9 @@ CREATE TABLE `booking` (
 
 CREATE TABLE `concert` (
   `concert_id` int(10) UNSIGNED NOT NULL,
-  `band_id` int(10) UNSIGNED DEFAULT NULL,
-  `venue_id` int(10) UNSIGNED DEFAULT NULL,
-  `concert_date` date DEFAULT NULL
+  `band_id` smallint(6) DEFAULT NULL,
+  `venue_id` smallint(6) DEFAULT NULL,
+  `concert_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -160,8 +161,9 @@ INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`) VALU
 --
 
 CREATE TABLE `venue` (
-  `venue_id` int(10) UNSIGNED NOT NULL,
-  `venue_name` varchar(255) DEFAULT NULL
+  `venue_id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `venue_name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`venue_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -188,7 +190,7 @@ INSERT INTO `venue` (`venue_id`, `venue_name`) VALUES
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`mobile_number`);
+  ADD PRIMARY KEY (`username`);
 
 --
 -- Indexes for table `attendee`
@@ -200,14 +202,12 @@ ALTER TABLE `attendee`
 -- Indexes for table `band`
 --
 ALTER TABLE `band`
-  ADD PRIMARY KEY (`band_id`),
   ADD UNIQUE KEY `band_name` (`band_name`);
 
 --
 -- Indexes for table `booking`
 --
 ALTER TABLE `booking`
-  ADD PRIMARY KEY (`booking_id`),
   ADD KEY `mobile_number` (`mobile_number`),
   ADD KEY `concert_id` (`concert_id`);
 
@@ -223,7 +223,6 @@ ALTER TABLE `concert`
 -- Indexes for table `venue`
 --
 ALTER TABLE `venue`
-  ADD PRIMARY KEY (`venue_id`),
   ADD UNIQUE KEY `venue_name` (`venue_name`);
 
 --
@@ -234,7 +233,7 @@ ALTER TABLE `venue`
 -- AUTO_INCREMENT for table `band`
 --
 ALTER TABLE `band`
-  MODIFY `band_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `band_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `booking`
@@ -252,7 +251,7 @@ ALTER TABLE `concert`
 -- AUTO_INCREMENT for table `venue`
 --
 ALTER TABLE `venue`
-  MODIFY `venue_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `venue_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables

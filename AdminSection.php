@@ -2,6 +2,32 @@
 <?php
 	require 'db_connect.php';
 	
+	$validLogin = false;
+	// Prepare the SQL statement
+	$stmt = $db->prepare("SELECT * FROM admin WHERE username = ?");
+
+	// Execute the statement with the provided username
+	$stmt->execute([$username]);
+
+	// Fetch the result
+	$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	if ($result) {
+		$validLogin = true;
+	}
+	
+	if (!$validLogin) {
+        echo '<div class="content">';
+        echo '<center>';
+		echo '<h1>No valid Admin logged in.</h1>';
+		echo '<br/>';
+		echo '<h2>What are you doing here?</h2>';
+        echo '</center>';
+        echo '</div>';
+		
+		exit;
+	}
+										
 	$confirmationMessage = '';
 	// Variable to track which band/venue is being edited
 	$editBandId = null; 
@@ -324,7 +350,7 @@
 											// Delete button
 											echo '<form method="POST" style="display:inline; margin-left: 10px;">';
 											echo '<input type="hidden" name="delete_band_id" value="' . $row['band_id'] . '">';
-											echo '<button name="delete">Delete</button>';
+											echo '<button name="delete" onclick="return confirm(\'Are you sure you want to delete this thread?\')">Delete</button>';
 											echo '</form>';
 											
 											echo '</div>';
@@ -478,7 +504,7 @@
 											// Delete button
 											echo '<form method="POST" style="display:inline; margin-left: 10px;">';
 											echo '<input type="hidden" name="delete_venue_id" value="' . $row['venue_id'] . '">';
-											echo '<button name="delete">Delete</button>';
+											echo '<button name="delete" onclick="return confirm(\'Are you sure you want to delete this thread?\')">Delete</button>';
 											echo '</form>';
 											
 											echo '</div>';
@@ -527,14 +553,20 @@
                     <div class="add-new-band">
                         <form id="addConcertForm" method="post" action="AdminSection.php" onsubmit="return validateConcert()">
 							<select name="bandSelect" required>
-								<option value=""selected disabled>Select a Band</option>
+								<option value="" disabled>Select a Band</option>
 								 <?php
 									$result = $db->query("Select * FROM band ORDER BY band_id");
 									if ($result && $result->rowCount() > 0) 
 									{
+										// Prepare the SQL statement
+										$concert = $db->prepare("SELECT * FROM concert WHERE concert_id = ?");
+										$concert->execute([$editconcertId]);
+										$concertData = $concert->fetch(PDO::FETCH_ASSOC);
+										
 										foreach ($result as $row)
 										{
-											echo '<option value="'.$row['band_id'].'">',$row['band_name'].'</option>';
+											$selected = ($row['band_id'] == $concertData['band_id']) ? 'selected' : '';
+											echo '<option value="'.$row['band_id'].'" '.$selected.'>',$row['band_name'].'</option>';
 										}
 									}
 								?>
@@ -547,21 +579,22 @@
 									{
 										foreach ($result as $row)
 										{
-											echo '<option value="'.$row['venue_id'].'">',$row['venue_name'].'</option>';
+											$selected = ($row['venue_id'] == $concertData['venue_id']) ? 'selected' : '';
+											echo '<option value="'.$row['venue_id'].'" '.$selected.'>',$row['venue_name'].'</option>';
 										}
 									}
 								?>
 							</select>
-                            <input type="date" id="concert_date" name="concert_date" required>
-							
 							
 							<?php 
 								if ($editconcertId == null) 
 								{
+									echo '<input type="datetime-local" id="concert_date" name="concert_date" required></br>';
 									echo '<button type="submit">Add Concert</button>';
 								}
 								else
 								{
+									echo '<input type="datetime-local" id="concert_date" name="concert_date" value="' . date('Y-m-d\TH:i', strtotime($concertData['concert_date'])) . '" required></br>';
 									echo '<input type="hidden" name="concert_id" value="' . $editconcertId . '">';
 									echo '<button type="submit">Save Concert</button>';
 								}
@@ -623,20 +656,22 @@
 										JOIN venue v ON c.venue_id = v.venue_id
 										ORDER BY c.concert_id
 									");
-
+									
 									if ($result && $result->rowCount() > 0) 
 									{
+										
 										echo '<ul>';
 										foreach ($result as $row) 
 										{   
 											// Convert the date to Australian format (DD/MM/YYYY)
 											$concertDate = new DateTime($row['concert_date']);
 											$formattedDate = $concertDate->format('d/m/Y');
+											$formattedTime = $concertDate->format('H:i');
 											
 											echo '<li>';
 											echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
 											echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
-											echo '<center>' . htmlspecialchars($formattedDate) . '</center></div>';
+											echo '<center>' . htmlspecialchars($formattedTime) . " ". htmlspecialchars($formattedDate) . '</center></div>';
 											
 											echo '<div class="actions">';
 											
@@ -649,7 +684,7 @@
 												// Delete button
 												echo '<form method="POST" style="display:inline;">';
 												echo '<input type="hidden" name="delete_concert_id" value="' . $row['concert_id'] . '">';
-												echo '<button name="delete">Delete</button>';
+												echo '<button name="delete" onclick="return confirm(\'Are you sure you want to delete this thread?\')">Delete</button>';
 												echo '</form>';
 											echo '</div>';
 											echo '</li>';
