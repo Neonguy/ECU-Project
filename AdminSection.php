@@ -1,33 +1,8 @@
 
 <?php
 	require 'db_connect.php';
-	
-	$validLogin = false;
-	// Prepare the SQL statement
-	$stmt = $db->prepare("SELECT * FROM admin WHERE username = ?");
-
-	// Execute the statement with the provided username
-	$stmt->execute([$username]);
-
-	// Fetch the result
-	$result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	if ($result) {
-		$validLogin = true;
-	}
-	
-	if (!$validLogin) {
-        echo '<div class="content">';
-        echo '<center>';
-		echo '<h1>No valid Admin logged in.</h1>';
-		echo '<br/>';
-		echo '<h2>What are you doing here?</h2>';
-        echo '</center>';
-        echo '</div>';
 		
-		exit;
-	}
-										
+	$validLogin = isset($_SESSION['uname']);
 	$confirmationMessage = '';
 	// Variable to track which band/venue is being edited
 	$editBandId = null; 
@@ -35,8 +10,7 @@
 	$editconcertId = null;
 
 	// Check if the form has been submitted
-	if ($_POST && isset($_POST['bandName']))
-	{
+	if ($_POST && isset($_POST['bandName'])) {
 		// Get the band name from the form
 		$bandName = trim($_POST['bandName']);
 
@@ -80,8 +54,7 @@
 		}
 	}
 	// Check if the form has been submitted
-	if ($_POST && isset($_POST['venueName'])) 
-	{
+	if ($_POST && isset($_POST['venueName'])) {
 		// Get the venue name from the form
 		$venueName = trim($_POST['venueName']);
 
@@ -125,8 +98,7 @@
 		}
 	}
 	// Check if the form has been submitted
-	if ($_POST && isset($_POST['bandSelect']) && isset($_POST['venueSelect']) && isset($_POST['concert_date'])) 
-	{
+	if ($_POST && isset($_POST['bandSelect']) && isset($_POST['venueSelect']) && isset($_POST['concert_date'])) {
 		  
 		// Get the venue name from the form
 		$band_id = trim($_POST['bandSelect']);
@@ -184,6 +156,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="author" content="Sebbs" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events Listing</title>
@@ -204,9 +177,32 @@
 		button[name=delete] {
 			background-color: red;
 		}
+		button[name=login] { 
+			width: 30%; 
+			background-color: green; 
+			color: white; 
+			padding: 10px; 
+			margin: 10px; 
+			border-radius: 5px; 
+			cursor: pointer; 
+		}
     </style>
 </head>
 <body>
+	<?php
+		if (!$validLogin) {
+			echo '<div class="container">';
+				echo '<h1>Admin Section</h1>';
+				echo '<h2>Please log In</h2>';
+				echo '<form action="admin_login.php" method="post">';
+					echo '<button type="submit" name="login">Log in</button>';
+				echo '</form>';
+			echo '</div>';
+			
+			exit;
+		}
+	?>
+
     <div class="container">
         <h1>Welcome to Events Listing, the Free Event Website!</h1>
         <div class="content">
@@ -217,7 +213,7 @@
                         <li>Manage Bands <input type="radio" name="menu" value="bands" onclick="changeLayout('bands')"></li>
                         <li>Manage Venues <input type="radio" name="menu" value="venues" onclick="changeLayout('venues')"></li>
                         <li>Manage Concerts <input type="radio" name="menu" value="concert" onclick="changeLayout('concert')"></li>
-                        <li><a href="#">Log Out</a></li>
+                        <li><a href="logout.php">Log Out</a></li>
                     </ul>
                 </center>
             </section>
