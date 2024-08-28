@@ -9,9 +9,9 @@
 		
 		try 
 		{
-			$userdata = $db->prepare("SELECT * FROM admin WHERE username = ? AND password = ?");
-			$userdata->execute([$user_name, $password]);
-			$user = $userdata->fetch(PDO::FETCH_ASSOC);
+			$stmt = $db->prepare("SELECT * FROM admin WHERE username = ? AND password = ?");
+			$stmt->execute([$user_name, $password]);
+			$user = $stmt->fetch();
 			
 			if ($user) {
 				$_SESSION['uname'] = $user['username'];

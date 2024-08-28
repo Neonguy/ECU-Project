@@ -9,9 +9,9 @@
 		
 		try 
 		{
-			$userdata = $db->prepare("SELECT * FROM attendee WHERE mobile_number = ? AND password = ?");
-			$userdata->execute([$mobile_number, $password]);
-			$user = $userdata->fetch(PDO::FETCH_ASSOC);
+			$stmt = $db->prepare("SELECT * FROM attendee WHERE mobile_number = ? AND password = ?");
+			$stmt->execute([$mobile_number, $password]);
+			$user = $stmt->fetch();
 			
 			if ($user) {
 				$_SESSION['mobile'] = $user['mobile_number'];

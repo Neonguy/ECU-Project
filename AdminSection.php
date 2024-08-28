@@ -555,9 +555,9 @@
 									if ($result && $result->rowCount() > 0) 
 									{
 										// Prepare the SQL statement
-										$concert = $db->prepare("SELECT * FROM concert WHERE concert_id = ?");
-										$concert->execute([$editconcertId]);
-										$concertData = $concert->fetch(PDO::FETCH_ASSOC);
+										$stmt = $db->prepare("SELECT * FROM concert WHERE concert_id = ?");
+										$stmt->execute([$editconcertId]);
+										$concertData = $stmt->fetch();
 										
 										foreach ($result as $row)
 										{
