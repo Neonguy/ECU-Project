@@ -223,6 +223,15 @@
             </section>
             <section class="edit-area">
                 <div id="bands" class="layout">
+                    <div class="add-new-band">
+                        <center>
+                        <h2>Add New Band</h2>
+                        <form id="addBandForm" method="post" action="AdminSection.php" onsubmit="return validateBand()">
+                            <input type="text" id="bandName" name="bandName" placeholder="Band Name">
+                            <button type="submit">Add Band</button>
+                        </form>
+                        </center>
+                    </div>
                     <div class="current-bands">
                         <center>
                         <h2>Current Bands</h2>
@@ -366,17 +375,17 @@
 							?>
                         </ul>
                     </div>
+                </div>
+                <div id="venues" class="layout">
                     <div class="add-new-band">
                         <center>
-                        <h2>Add New Band</h2>
-                        <form id="addBandForm" method="post" action="AdminSection.php" onsubmit="return validateBand()">
-                            <input type="text" id="bandName" name="bandName" placeholder="Band Name">
-                            <button type="submit">Add Band</button>
+                        <h2>Add New Venue</h2>
+                        <form id="addVenueForm" method="post" action="AdminSection.php" onsubmit="return validateVenue()">
+                            <input type="text" id="venueName" name="venueName" placeholder="Venue Name">
+                            <button type="submit">Add Venue</button>
                         </form>
                         </center>
                     </div>
-                </div>
-                <div id="venues" class="layout">
                     <div class="current-bands">
                         <center>
                         <h2>Current Venues</h2>
@@ -519,15 +528,6 @@
 								}
 							?>
                         </ul>
-                    </div>
-                    <div class="add-new-band">
-                        <center>
-                        <h2>Add New Venue</h2>
-                        <form id="addVenueForm" method="post" action="AdminSection.php" onsubmit="return validateVenue()">
-                            <input type="text" id="venueName" name="venueName" placeholder="Venue Name">
-                            <button type="submit">Add Venue</button>
-                        </form>
-                        </center>
                     </div>
                 </div>
 				
