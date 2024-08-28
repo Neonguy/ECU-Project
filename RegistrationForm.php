@@ -13,58 +13,7 @@
 			$confirmationMessage = 'Please fill in all required fields.';
 		}
 	}
-		
-	// Check if the form has been submitted
-	if ($_POST && isset($_POST['mobile_number']) && isset($_POST['first_name']) && isset($_POST['surname']) && isset($_POST['password'])) 
-	{
-		// Get the details name from the form
-		$mobile_number = trim($_POST['mobile_number']);
-		$first_name = trim($_POST['first_name']);
-		$surname = trim($_POST['surname']);
-		$password = trim($_POST['password']);
-
-		// Check if the venue name is not empty
-		if (!empty($mobile_number) && !empty($first_name) && !empty($surname) && !empty($password)) 
-		{
-			try 
-			{
-				// Prepare the SQL statement to insert the concert details
-				$stmt = $db->prepare("INSERT INTO attendee (mobile_number, first_name, surname, password) VALUES (:mobile_number, :first_name, :surname, :password)");
-
-				// Bind the parameters to the SQL query
-				$stmt->bindParam(':mobile_number', $mobile_number);
-				$stmt->bindParam(':first_name', $first_name);
-				$stmt->bindParam(':surname', $surname);
-				$stmt->bindParam(':password', $password);
-
-				// Execute the query
-				if ($stmt->execute()) 
-				{
-					// Redirect to RegistrationForm.php with a success message
-					header("Location: RegistrationForm.php?status=success");
-					exit();
-				} 
-				else 
-				{
-					// Redirect to RegistrationForm.php with an error message
-					header("Location: RegistrationForm.php?status=error");
-					exit();
-				}
-			} 
-			catch (PDOException $e) 
-			{
-				// Redirect to RegistrationForm.php with an error message
-				header("Location: RegistrationForm.php?status=error");
-				exit();
-			}
-		} 
-		else 
-		{
-			// Redirect to RegistrationForm.php with a validation message
-			header("Location: RegistrationForm.php?status=empty");
-			exit();
-		}
-	}
+	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +44,7 @@
     <div class="container">
 	<h1>Registration Form</h1>
 	<center>
-			<form name="registrationForm" onsubmit="return validateForm()" method="post" action="RegistrationForm.php">
+			<form name="registrationForm" onsubmit="return validateForm()" method="post" action="Register_User.php">
 				<fieldset class="fieldset">
 				<center>
 					<input type="text" name="mobile_number" required placeholder="Mobile Number">
@@ -103,6 +52,8 @@
 					<input type="text" name="surname" required placeholder="Surname">
 					<input type="password" name="password" placeholder="Password">
 					<input type="password" name="confirm_password" placeholder="Confirm Password">
+					<div class="input-container"><input type="date" id="date_of_birth" name="date_of_birth" required></div>
+					
 					
 				</center>
                     <button type="submit">Register</button>
@@ -127,7 +78,12 @@ function validateForm() {
     var surname = doc.surname.value;
     var password = doc.password.value;
     var confirm_password = doc.confirm_password.value;
+    var date_of_birth = doc.date_of_birth.value;
 
+	var today = new Date();
+	var dobDate = new Date(date_of_birth);
+	var minAge = 14;
+	
     // Validate mobile number
     var mobilePattern = /^\+?([0-9]{1,3})\)?[-. ]?([0-9]{9,10})$/;
     if (!mobilePattern.test(mobile_number)) {
@@ -144,6 +100,30 @@ function validateForm() {
         alert("Passwords do not match.");
         return false;
     }
+	
+	if (date_of_birth === "") {
+		alert("Date of birth cannot be empty.");
+		doc.date_of_birth.style.borderColor = "red";
+        return false;
+	} 
+	else 
+	{
+		var age = today.getFullYear() - dobDate.getFullYear();
+		var m = today.getMonth() - dobDate.getMonth();
+		if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+			age--;
+		}
+		
+		if (age < minAge) {
+			doc.date_of_birth.style.borderColor = "red";
+			alert("You must be at least " + minAge + " years old to register.");
+			return false;
+		}
+		else
+		{
+			doc.date_of_birth.style.borderColor = "";
+		}
+	}
 
     return true;
 }
