@@ -549,7 +549,7 @@
                     <div class="add-new-band">
                         <form id="addConcertForm" method="post" action="AdminSection.php" onsubmit="return validateConcert()">
 							<select name="bandSelect" required>
-								<option value="" disabled>Select a Band</option>
+								<option value="" selected disabled>Select a Band</option>
 								 <?php
 									$result = $db->query("Select * FROM band ORDER BY band_id");
 									if ($result && $result->rowCount() > 0) 
