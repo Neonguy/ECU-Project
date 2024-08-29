@@ -14,7 +14,7 @@
 			$user = $stmt->fetch();
 			
 			if ($user) {
-				$_SESSION['uname'] = $user['username'];
+				$_SESSION['username'] = $user['username'];
 				header('Location: AdminSection.php');
 			}
 			else
@@ -36,11 +36,11 @@
 <html lang="en">
 <head>
 	<meta name="author" content="Sebbs" />
-    <meta charset="UTF-8">
-    <title>Registration Form</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        
+	<meta charset="UTF-8">
+	<title>Admin Log in</title>
+	<link rel="stylesheet" href="styles.css">
+	<style>
+		
 		input[type=text], input[type=password] {
 			width: 70%; 
 			margin: 3px; 
@@ -56,7 +56,7 @@
 			border-radius: 5px; 
 			cursor: pointer; 
 		}
-    </style>
+	</style>
 </head>
 <body>
 
@@ -71,7 +71,7 @@
 			<button type = "submit">Log in</button>
 			</fieldset>
 		</form>
-          <a href="PublicSection.php">Return Home</a>
+		  <a href="PublicSection.php">Return Home</a>
 		</center>
 	</div>
 

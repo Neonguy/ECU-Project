@@ -2,9 +2,8 @@
 <?php
 	require 'db_connect.php';
 		
-	if (!isset($_SESSION['uname'])) {
+	if (!isset($_SESSION['username'])) {
 		header("Location: admin_login.php");
-		exit();
 	}
 	
 	$confirmationMessage = '';
@@ -109,6 +108,7 @@
 		$venue_id = trim($_POST['venueSelect']);
 		$concert_date = trim($_POST['concert_date']);
 		$concert_id = trim($_POST['concert_id']);
+		$adult = isset($_POST['adult']) ? 1 : 0;
 
 		
 		// Check if required values are not empty
@@ -116,17 +116,18 @@
 			try {
 				if (!empty($concert_id)) {
 					// If concert_id exists, update the existing concert details
-					$stmt = $db->prepare("UPDATE concert SET band_id = :band_id, venue_id = :venue_id, concert_date = :concert_date WHERE concert_id = :concert_id");
+					$stmt = $db->prepare("UPDATE concert SET band_id = :band_id, venue_id = :venue_id, concert_date = :concert_date, adult = :adult WHERE concert_id = :concert_id");
 					$stmt->bindParam(':concert_id', $concert_id);
 				} else {
 					// If concert_id does not exist, insert a new concert
-					$stmt = $db->prepare("INSERT INTO concert (band_id, venue_id, concert_date) VALUES (:band_id, :venue_id, :concert_date)");
+					$stmt = $db->prepare("INSERT INTO concert (band_id, venue_id, concert_date, adult) VALUES (:band_id, :venue_id, :concert_date, :adult)");
 				}
 
 				// Bind the parameters to the SQL query
 				$stmt->bindParam(':band_id', $band_id);
 				$stmt->bindParam(':venue_id', $venue_id);
 				$stmt->bindParam(':concert_date', $concert_date);
+				$stmt->bindParam(':adult', $adult);
 
 				// Execute the query
 				if ($stmt->execute()) 
@@ -189,6 +190,13 @@
 			margin: 10px; 
 			border-radius: 5px; 
 			cursor: pointer; 
+		}
+		input[type=text], input[type=password], input[type=date], input[type=datetime-local], select {
+			margin: 3px;
+			width: 70%; 
+			padding: 8px; 
+			box-sizing: border-box;
+			text-align: center;
 		}
     </style>
 </head>
@@ -576,12 +584,14 @@
 								if ($editconcertId == null) 
 								{
 									echo '<input type="datetime-local" id="concert_date" name="concert_date" required></br>';
+									echo '<input type="checkbox" id="adult" name="adult"> 18+ Only</br>';
 									echo '<button type="submit">Add Concert</button>';
 								}
 								else
 								{
 									echo '<input type="datetime-local" id="concert_date" name="concert_date" value="' . date('Y-m-d\TH:i', strtotime($concertData['concert_date'])) . '" required></br>';
 									echo '<input type="hidden" name="concert_id" value="' . $editconcertId . '">';
+									echo '<input type="checkbox" id="adult" name="adult" value="1" ' . ($concertData['adult'] == 1 ? 'checked' : '') . '> 18+ Only<br>';
 									echo '<button type="submit">Save Concert</button>';
 								}
 							?>
@@ -636,7 +646,7 @@
 								{
 									// Fetch and display concert details
 									$result = $db->query("
-										SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date
+										SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult
 										FROM concert c
 										JOIN band b ON c.band_id = b.band_id
 										JOIN venue v ON c.venue_id = v.venue_id
@@ -657,6 +667,9 @@
 											echo '<li>';
 											echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
 											echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
+											if ($row['adult'] == 1) {
+												echo '<center>Adults Only</center>';
+											}
 											echo '<center>' . htmlspecialchars($formattedTime) . " ". htmlspecialchars($formattedDate) . '</center></div>';
 											
 											echo '<div class="actions">';
