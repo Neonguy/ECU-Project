@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 15, 2024 at 07:08 PM
+-- Generation Time: Aug 30, 2024 at 01:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -38,6 +38,13 @@ CREATE TABLE `admin` (
 -- RELATIONSHIPS FOR TABLE `admin`:
 --
 
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`username`, `password`) VALUES
+('Sebbs', 'SupermanRules1!');
+
 -- --------------------------------------------------------
 
 --
@@ -49,7 +56,7 @@ CREATE TABLE `attendee` (
   `first_name` varchar(255) DEFAULT NULL,
   `surname` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `dob` DATE NOT NULL
+  `dob` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -69,7 +76,8 @@ INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`, `d
 ('0405413987', 'Natalie', 'Brooks', '12345678', '2024-09-28'),
 ('0405896324', 'Sarah', 'Collier', '12345678', '2024-09-28'),
 ('0406649884', 'Rachel', 'Stark', '12345678', '2024-09-28'),
-('0407788149', 'Jessica', 'Bell', '12345678', '2024-09-28');
+('0407788149', 'Jessica', 'Bell', '12345678', '2024-09-28'),
+('0413062201', 'Test', 'User', '12345678', '1983-07-17');
 
 -- --------------------------------------------------------
 
@@ -78,9 +86,8 @@ INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`, `d
 --
 
 CREATE TABLE `band` (
-  `band_id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `band_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`band_id`)
+  `band_id` smallint(6) NOT NULL,
+  `band_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -110,10 +117,9 @@ INSERT INTO `band` (`band_id`, `band_name`) VALUES
 --
 
 CREATE TABLE `booking` (
-  `booking_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `booking_id` int(10) UNSIGNED NOT NULL,
   `mobile_number` varchar(255) DEFAULT NULL,
-  `concert_id` int(10) UNSIGNED DEFAULT NULL,
-  PRIMARY KEY (`booking_id`)
+  `concert_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -134,7 +140,8 @@ CREATE TABLE `concert` (
   `concert_id` int(10) UNSIGNED NOT NULL,
   `band_id` smallint(6) DEFAULT NULL,
   `venue_id` smallint(6) DEFAULT NULL,
-  `concert_date` datetime DEFAULT NULL
+  `concert_date` datetime DEFAULT NULL,
+  `adult` text NOT NULL DEFAULT 'N'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -149,10 +156,14 @@ CREATE TABLE `concert` (
 -- Dumping data for table `concert`
 --
 
-INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`) VALUES
-(11, 15, 7, '2024-09-28'),
-(12, 16, 5, '2024-11-02'),
-(13, 18, 6, '2024-11-22');
+INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`, `adult`) VALUES
+(11, 15, 7, '2024-09-29 22:00:00', 'Y'),
+(12, 16, 5, '2024-11-02 21:30:00', 'N'),
+(13, 18, 6, '2024-11-22 20:00:00', 'N'),
+(14, 14, 5, '2024-09-13 22:10:00', 'N'),
+(15, 14, 5, '2024-10-18 10:10:00', 'N'),
+(16, 16, 5, '2024-11-01 20:20:00', 'N'),
+(17, 16, 7, '2024-11-02 20:20:00', 'Y');
 
 -- --------------------------------------------------------
 
@@ -161,9 +172,9 @@ INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`) VALU
 --
 
 CREATE TABLE `venue` (
-  `venue_id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `venue_id` smallint(6) NOT NULL,
   `venue_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`venue_id`)
+  `capacity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -174,13 +185,13 @@ CREATE TABLE `venue` (
 -- Dumping data for table `venue`
 --
 
-INSERT INTO `venue` (`venue_id`, `venue_name`) VALUES
-(9, 'Astor Theatre Perth'),
-(8, 'Crown Theatre Perth'),
-(10, 'HBF Arena'),
-(7, 'His Majesty\'s Theatre'),
-(6, 'Optus Stadium'),
-(5, 'Perth Concert Hall');
+INSERT INTO `venue` (`venue_id`, `venue_name`, `capacity`) VALUES
+(5, 'Perth Concert Hall', 0),
+(6, 'Optus Stadium', 10000),
+(7, 'His Majesty\'s Theatre', 5),
+(8, 'Crown Theatre Perth', 0),
+(9, 'Astor Theatre Perth', 0),
+(10, 'HBF Arena', 0);
 
 --
 -- Indexes for dumped tables
@@ -202,12 +213,14 @@ ALTER TABLE `attendee`
 -- Indexes for table `band`
 --
 ALTER TABLE `band`
+  ADD PRIMARY KEY (`band_id`),
   ADD UNIQUE KEY `band_name` (`band_name`);
 
 --
 -- Indexes for table `booking`
 --
 ALTER TABLE `booking`
+  ADD PRIMARY KEY (`booking_id`),
   ADD KEY `mobile_number` (`mobile_number`),
   ADD KEY `concert_id` (`concert_id`);
 
@@ -223,6 +236,7 @@ ALTER TABLE `concert`
 -- Indexes for table `venue`
 --
 ALTER TABLE `venue`
+  ADD PRIMARY KEY (`venue_id`),
   ADD UNIQUE KEY `venue_name` (`venue_name`);
 
 --
@@ -245,7 +259,7 @@ ALTER TABLE `booking`
 -- AUTO_INCREMENT for table `concert`
 --
 ALTER TABLE `concert`
-  MODIFY `concert_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `concert_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `venue`
