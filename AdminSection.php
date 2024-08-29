@@ -108,7 +108,7 @@
 		$venue_id = trim($_POST['venueSelect']);
 		$concert_date = trim($_POST['concert_date']);
 		$concert_id = trim($_POST['concert_id']);
-		$adult = isset($_POST['adult']) ? 1 : 0;
+		$adult = isset($_POST['adult']) ? 'Y' : 'N';
 
 		
 		// Check if required values are not empty
@@ -591,7 +591,7 @@
 								{
 									echo '<input type="datetime-local" id="concert_date" name="concert_date" value="' . date('Y-m-d\TH:i', strtotime($concertData['concert_date'])) . '" required></br>';
 									echo '<input type="hidden" name="concert_id" value="' . $editconcertId . '">';
-									echo '<input type="checkbox" id="adult" name="adult" value="1" ' . ($concertData['adult'] == 1 ? 'checked' : '') . '> 18+ Only<br>';
+									echo '<input type="checkbox" id="adult" name="adult" value="N" ' . ($concertData['adult'] == 'Y' ? 'checked' : '') . '> 18+ Only<br>';
 									echo '<button type="submit">Save Concert</button>';
 								}
 							?>
@@ -667,7 +667,7 @@
 											echo '<li>';
 											echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
 											echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
-											if ($row['adult'] == 1) {
+											if ($row['adult'] == 'Y') {
 												echo '<center>Adults Only</center>';
 											}
 											echo '<center>' . htmlspecialchars($formattedTime) . " ". htmlspecialchars($formattedDate) . '</center></div>';
