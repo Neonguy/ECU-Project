@@ -71,6 +71,7 @@
 			<button type = "submit">Log in</button>
 			</fieldset>
 		</form>
+          <a href="PublicSection.php">Return Home</a>
 		</center>
 	</div>
 

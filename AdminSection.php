@@ -2,7 +2,11 @@
 <?php
 	require 'db_connect.php';
 		
-	$validLogin = isset($_SESSION['uname']);
+	if (!isset($_SESSION['uname'])) {
+		header("Location: admin_login.php");
+		exit();
+	}
+	
 	$confirmationMessage = '';
 	// Variable to track which band/venue is being edited
 	$editBandId = null; 
@@ -189,20 +193,6 @@
     </style>
 </head>
 <body>
-	<?php
-		if (!$validLogin) {
-			echo '<div class="container">';
-				echo '<h1>Admin Section</h1>';
-				echo '<h2>Please log In</h2>';
-				echo '<form action="admin_login.php" method="post">';
-					echo '<button type="submit" name="login">Log in</button>';
-				echo '</form>';
-			echo '</div>';
-			
-			exit;
-		}
-	?>
-
     <div class="container">
         <h1>Welcome to Events Listing, the Free Event Website!</h1>
         <div class="content">
