@@ -15,7 +15,8 @@
 			
 			if ($user) {
 				$_SESSION['mobile'] = $user['mobile_number'];
-				header('Location: PublicSection.php?success');
+        $_SESSION['real_name'] = $user['first_name'] . ' ' . $user['surname'];
+				header('Location: AttendeeSection.php?success');
 			}
 			else
 			{
