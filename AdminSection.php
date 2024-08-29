@@ -668,7 +668,7 @@
 											echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
 											echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
 											if ($row['adult'] == 'Y') {
-												echo '<center>Adults Only</center>';
+												echo '<center><span style="color: red;">Adults Only</span></center>';
 											}
 											echo '<center>' . htmlspecialchars($formattedTime) . " ". htmlspecialchars($formattedDate) . '</center></div>';
 											
