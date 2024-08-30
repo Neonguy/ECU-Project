@@ -40,32 +40,29 @@
                 <center>
 
               <h3>Upcoming Concerts:</h3>
-<?php            
-            									// Fetch and display concert details
-									$result = $db->query
-                  ("
-										SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult
-										FROM concert c
-										JOIN band b ON c.band_id = b.band_id
-										JOIN venue v ON c.venue_id = v.venue_id
-										ORDER BY c.concert_id
-									");
+				<?php            
+					// Fetch and display concert details
+					$result = $db->query ("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult
+						FROM concert c
+						JOIN band b ON c.band_id = b.band_id
+						JOIN venue v ON c.venue_id = v.venue_id
+						ORDER BY c.concert_id");
 
- 									if ($result && $result->rowCount() > 0) 
-									{
-										echo '<ul>';
-										foreach ($result as $row) 
-										{   
-											displayConcert($row);			
-										}
-										echo '</ul>';
-                    } 
-                    else 
-                      {
-										echo '<li><div class="label">No concerts available</div></li>';
-									} 
-               
-?>
+						if ($result && $result->rowCount() > 0) 
+						{
+							echo '<ul>';
+							foreach ($result as $row) 
+							{   
+								displayConcert($row);			
+							}
+							echo '</ul>';
+						}
+						else 
+						{
+							echo '<li><div class="label">No concerts available</div></li>';
+						} 
+				?>
+					
                 <h3>Your Bookings:</h3>
                 <!-- retrieve login bookings from database -->
 
