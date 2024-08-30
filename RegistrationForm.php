@@ -13,11 +13,11 @@
 			$confirmationMessage = 'Please fill in all required fields.';
 		}
 	}
-	
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="author" content="Sebbs" />
     <meta charset="UTF-8">
     <title>Registration Form</title>
     <link rel="stylesheet" href="styles.css">
@@ -44,29 +44,30 @@
     <div class="container">
 	<h1>Registration Form</h1>
 	<center>
-			<form name="registrationForm" onsubmit="return validateForm()" method="post" action="Register_User.php">
-				<fieldset class="fieldset">
-				<center>
-					<input type="text" name="mobile_number" required placeholder="Mobile Number">
-					<input type="text" name="first_name" required placeholder="First Name">
-					<input type="text" name="surname" required placeholder="Surname">
-					<input type="password" name="password" placeholder="Password">
-					<input type="password" name="confirm_password" placeholder="Confirm Password">
-					<div class="input-container"><input type="date" id="date_of_birth" name="date_of_birth" required></div>
-					
-					
-				</center>
-                    <button type="submit">Register</button>
-				</fieldset>
-			</form>
-			<button onclick="history.back()">Go Back</button>
-	<?php
-		// Display the confirmation message
-		if ($confirmationMessage) 
-		{
-			echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
-		}
-	?>
+		<form name="registrationForm" onsubmit="return validateForm()" method="post" action="Register_User.php">
+			<fieldset class="fieldset">
+			<center>
+				<input type="text" name="mobile_number" required placeholder="Mobile Number">
+				<input type="text" name="first_name" required placeholder="First Name">
+				<input type="text" name="surname" required placeholder="Surname">
+				<input type="password" name="password" placeholder="Password">
+				<input type="password" name="confirm_password" placeholder="Confirm Password">
+				<div class="input-container"><input type="date" id="date_of_birth" name="date_of_birth" required></div>
+				
+				
+			</center>
+				<button type="submit">Register</button>
+			</fieldset>
+		</form>
+		<button onclick="window.location.href='PublicSection.php';">Go Back</button>
+
+		<?php
+			// Display the confirmation message
+			if ($confirmationMessage) 
+			{
+				echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
+			}
+		?>
 	</center>
 	</div>
 </body>

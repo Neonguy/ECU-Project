@@ -31,7 +31,7 @@
 				if ($stmt->execute()) 
 				{
 					// Redirect to RegistrationForm.php with a success message
-					header("Location: RegistrationForm.php?status=success");
+					header("Location: PublicSection.php?status=success");
 					exit();
 				} 
 				else 
@@ -59,6 +59,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta name="author" content="Sebbs" />
     <meta charset="UTF-8">
     <title>Registration Form</title>
     <link rel="stylesheet" href="styles.css">

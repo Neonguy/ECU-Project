@@ -1,5 +1,8 @@
 <?php
 	require 'db_connect.php';
+	if (isset($_SESSION['mobile'])) {
+		header("Location: AttendeeSection.php");
+	}
 
 ?>
 
@@ -16,6 +19,15 @@
 			margin: 3px; 
 			box-sizing: border-box;
 			text-align: center;
+		}
+		button[type=submit] { 
+			width: 30%; 
+			background-color: green; 
+			color: white; 
+			padding: 10px; 
+			margin: 10px; 
+			border-radius: 5px; 
+			cursor: pointer; 
 		}
  
 	</style>
@@ -35,7 +47,7 @@
 <br/>
 <button name = "login" type = "submit">Log in</button>
 </form>
-<p>Click <a href=>here</a> to register.</p>
+<p>Click <a href="RegistrationForm.php">here</a> to register.</p>
 <a href="admin_login.php">Admin Login</a>
 				</center>  
 			</section>
