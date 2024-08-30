@@ -92,13 +92,17 @@
 								WHERE a.mobile_number = ?");
 							$stmt->execute([$_SESSION['mobile']]);
 
-							if ($stmt->rowCount() > 0) {
-								foreach ($stmt as $row) {
-									echo 'Session mobile = ' . $_SESSION['mobile'];
-									echo '<br>';
-									echo 'row mobile = ' . $row['mobile_number'];
-								}
-							} else {
+							if ($stmt->rowCount() > 0) 
+              {
+                echo '<ul>';
+								foreach ($stmt as $row) 
+                {
+                  displayConcert($row);
+                }
+                echo '</ul>';
+              } 
+              else 
+              {
 								echo 'no results found';
 							}
 						} catch (PDOException $e) {
