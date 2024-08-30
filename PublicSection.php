@@ -1,9 +1,21 @@
 <?php
 	require 'db_connect.php';
+	
 	if (isset($_SESSION['mobile'])) {
 		header("Location: AttendeeSection.php");
 	}
 
+	$confirmationMessage = '';
+	
+	if (isset($_GET['status'])) {
+		if ($_GET['status'] == 'success') {
+			$confirmationMessage = 'Login Successful.';
+		} elseif ($_GET['status'] == 'error') {
+			$confirmationMessage = 'Login Failed.';
+		} elseif ($_GET['status'] == 'empty') {
+			$confirmationMessage = 'Please fill in all required fields to log in.';
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -41,14 +53,15 @@
 				<p><i>You cannot book tickets</i></p>
 				<p><i>unless you are logged in</i></p>
 				
-<form id="login" method="post" action="user_login.php">
-<input type="text" name="mobile_number" required placeholder="Mobile Number">
-<input type="password" name="password" placeholder="Password">
-<br/>
-<button name = "login" type = "submit">Log in</button>
-</form>
-<p>Click <a href="RegistrationForm.php">here</a> to register.</p>
-<a href="admin_login.php">Admin Login</a>
+				<form id="login" method="post" action="user_login.php">
+					<input type="text" name="mobile_number" required placeholder="Mobile Number">
+					<input type="password" name="password" placeholder="Password">
+					<br/>
+					<button name = "login" type = "submit">Log in</button>
+				</form>
+				
+				<p>Click <a href="RegistrationForm.php">here</a> to register.</p>
+				<a href="admin_login.php">Admin Login</a>
 				</center>  
 			</section>
 			<section class="edit-area">
@@ -79,7 +92,14 @@
 					
 				</center>
 			</section>   
-		</div>		
+		</div>	
+		<?php
+			// Display the confirmation message
+			if ($confirmationMessage) 
+			{
+				echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
+			}
+		?>	
 	</div>	   
 	<script>
 				/*-- validation alerts --> */

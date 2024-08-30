@@ -16,11 +16,11 @@
 			if ($user) {
 				$_SESSION['mobile'] = $user['mobile_number'];
 				$_SESSION['real_name'] = $user['first_name'] . ' ' . $user['surname'];
-				header('Location: AttendeeSection.php?success');
+				header('Location: AttendeeSection.php?status=success');
 			}
 			else
 			{
-				header('Location: PublicSection.php?error');
+				header('Location: PublicSection.php?status=error');
 			}
 		}
 		catch (PDOException $e) 
@@ -36,8 +36,8 @@
 <html lang="en">
 <head>
 	<meta name="author" content="Sebbs" />
-    <meta charset="UTF-8">
-    <title>Registration Form</title>
-    <link rel="stylesheet" href="styles.css">
+	<meta charset="UTF-8">
+	<title>Registration Form</title>
+	<link rel="stylesheet" href="styles.css">
 </head>
 </html>
