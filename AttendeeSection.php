@@ -1,6 +1,9 @@
 <?php
 	require 'db_connect.php';
   
+	if (!isset($_SESSION['real_name'])) {
+		header("Location: PublicSection.php");
+	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
