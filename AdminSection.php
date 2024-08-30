@@ -656,36 +656,11 @@
 									if ($result && $result->rowCount() > 0) 
 									{
 										
-										echo '<ul>';
-										foreach ($result as $row) 
-										{   
-											// Convert the date to Australian format (DD/MM/YYYY)
-											$concertDate = new DateTime($row['concert_date']);
-											$formattedDate = $concertDate->format('d/m/Y');
-											$formattedTime = $concertDate->format('H:i');
+										foreach ($result as $row) {  
+								
+											displayConcert($row);
+											displayConcertButtons($row);
 											
-											echo '<li>';
-											echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
-											echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
-											if ($row['adult'] == 'Y') {
-												echo '<center><span style="color: red;">Adults Only</span></center>';
-											}
-											echo '<center>' . htmlspecialchars($formattedTime) . " ". htmlspecialchars($formattedDate) . '</center></div>';
-											
-											echo '<div class="actions">';
-											
-												// Edit button
-												echo '<form method="POST" style="display:inline;">';
-												echo '<input type="hidden" name="edit_concert_id" value="' . $row['concert_id'] . '">';
-												echo '<button name="edit">Edit</button>';
-												echo '</form>';
-												
-												// Delete button
-												echo '<form method="POST" style="display:inline;">';
-												echo '<input type="hidden" name="delete_concert_id" value="' . $row['concert_id'] . '">';
-												echo '<button name="delete" onclick="return confirm(\'Are you sure you want to delete this thread?\')">Delete</button>';
-												echo '</form>';
-											echo '</div>';
 											echo '</li>';
 										}
 										echo '</ul>';

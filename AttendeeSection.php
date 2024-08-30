@@ -44,7 +44,7 @@
             									// Fetch and display concert details
 									$result = $db->query
                   ("
-										SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date
+										SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult
 										FROM concert c
 										JOIN band b ON c.band_id = b.band_id
 										JOIN venue v ON c.venue_id = v.venue_id
@@ -56,15 +56,7 @@
 										echo '<ul>';
 										foreach ($result as $row) 
 										{   
-											// Convert the date to Australian format (DD/MM/YYYY)
-											$concertDate = new DateTime($row['concert_date']);
-											$formattedDate = $concertDate->format('d/m/Y');
-											
-											echo '<li>';
-
-											echo '<div class="label"><center>' . htmlspecialchars($row['band_name']) . '</center>';
-											echo '<center>' . htmlspecialchars($row['venue_name']) . '</center>';
-											echo '<center>' . htmlspecialchars($formattedDate) . '</center></div>';								
+											displayConcert($row);			
 										}
 										echo '</ul>';
                     } 
