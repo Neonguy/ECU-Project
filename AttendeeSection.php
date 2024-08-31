@@ -25,6 +25,25 @@
         .actions button {
             margin-left: 10px;
         }
+		button[name=delete], button[name=cancel] {
+			background-color: red;
+		}
+		button[name=login] { 
+			width: 30%; 
+			background-color: green; 
+			color: white; 
+			padding: 10px; 
+			margin: 10px; 
+			border-radius: 5px; 
+			cursor: pointer; 
+		}
+		input[type=text], input[type=password], input[type=date], input[type=datetime-local], select {
+			margin: 3px;
+			width: 70%; 
+			padding: 8px; 
+			box-sizing: border-box;
+			text-align: center;
+		}
     </style>
 </head>
 <body>
@@ -53,6 +72,8 @@
 					<!-- need to modify right hand box size in css -->                
 					<center>
 					<h3>Upcoming Concerts</h3>
+					
+                    <div class="current-bands">
 					<?php            
 						// Fetch and display concert details
 						$result = $db->query ("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult
@@ -66,7 +87,8 @@
 								echo '<ul>';
 								foreach ($result as $row) 
 								{   
-									displayConcert($row);			
+									displayConcert($row);
+									displayBookingButton($row);
 								}
 								echo '</ul>';
 							}
@@ -75,12 +97,15 @@
 								echo '<li><div class="label">No concerts available</div></li>';
 							} 
 					?>
+                    </div>
 					</center>
 				</div>
 					
                 <div id="bookings" class="layout">
 					<center>
 					<h3>Your Bookings</h3>
+					
+                    <div class="current-bands">
 					<?php            
 						// get bookings by mobile number
 						try {
@@ -92,23 +117,23 @@
 								WHERE a.mobile_number = ?");
 							$stmt->execute([$_SESSION['mobile']]);
 
-							if ($stmt->rowCount() > 0) 
-              {
-                echo '<ul>';
-								foreach ($stmt as $row) 
-                {
-                  displayConcert($row);
-                }
-                echo '</ul>';
-              } 
-              else 
-              {
+							if ($stmt->rowCount() > 0) {
+								
+								echo '<ul>';
+								foreach ($stmt as $row) {
+									displayConcert($row);
+									displayCancelButtons($row);
+								}
+								echo '</ul>';
+								
+							} else {
 								echo 'no results found';
 							}
 						} catch (PDOException $e) {
 							echo 'Error: ' . $e->getMessage();
 						}
 					?>
+                    </div>
 					</center>
 				</div>
             </section>
