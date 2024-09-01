@@ -15,7 +15,16 @@
 		echo $e->getMessage();
 		exit;
 	} 
-	
+	// Fetch and display concert details
+	$displayConcerts = $db->query ("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult, COUNT(j.concert_id) AS tickets_sold
+						FROM concert c
+						JOIN band b ON c.band_id = b.band_id
+						JOIN venue v ON c.venue_id = v.venue_id
+						LEFT JOIN booking j ON c.concert_id = j.concert_id
+						GROUP BY c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult
+						ORDER BY c.concert_date");
+											
+											
 	function displayConcert($concert) {
 		if ($concert) {
 			
@@ -33,6 +42,10 @@
 				echo '<center>' . htmlspecialchars($concert['venue_name']) . '</center>';
 				echo '<center>' . htmlspecialchars($formattedDate) . '</center>';
 				
+				if (isset($concert['capacity']) && $concert['capacity'] > 0) {
+					echo '<center>Capacity (' . htmlspecialchars($concert['tickets_sold']) . '/' . htmlspecialchars($concert['capacity']) . ')</center>';
+					
+				}
 				if ($concert['adult'] == 'Y') {
 					echo '<center><span style="color: red;">Adults Only</span></center>';
 				}
@@ -85,7 +98,7 @@
 			// Check if the concert date is in the past or today
 			if ($concertDate >= $current_date) {
 				
-				if (!in_array($concert['concert_id'], $bookedConcertIds)) {
+				if (!in_array($concert['concert_id'], $bookedConcertIds) && ($concert['tickets_sold'] < $concert['capacity'] ||$concert['capacity'] == 0)) {
 					echo '<div class="actions">';
 					
 						// cancel button

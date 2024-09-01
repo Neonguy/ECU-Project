@@ -24,11 +24,13 @@
 
 	// these calls need to be below the add and delete tasks to ensure data is up to date for display
 	// Fetch and display concert details
-	$concerts = $db->query ("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult
+	$concerts = $db->query ("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult, COUNT(j.concert_id) AS tickets_sold
 		FROM concert c
 		JOIN band b ON c.band_id = b.band_id
 		JOIN venue v ON c.venue_id = v.venue_id
-		ORDER BY c.concert_id");
+		LEFT JOIN booking j ON c.concert_id = j.concert_id
+		GROUP BY c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult
+		ORDER BY c.concert_date");
 
 	// get bookings by mobile number
 	$bookings = $db->prepare("SELECT a.booking_id, a.mobile_number, a.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult
@@ -153,7 +155,7 @@
 							echo '</ul>';
 							
 						} else {
-							echo 'no results found';
+							echo 'No results found';
 						}
 					?>
 					</div>
