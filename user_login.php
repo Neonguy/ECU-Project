@@ -15,7 +15,8 @@
 			
 			if ($user) {
 				$hashedPassword = $user['password'];
-				if (password_verify($password, $hashedPassword)) {
+				//if (password_verify($password, $hashedPassword)) {
+				if ($password == $hashedPassword) {
 					echo "Password is correct!";
 					$_SESSION['mobile'] = $user['mobile_number'];
 					$_SESSION['real_name'] = $user['first_name'] . ' ' . $user['surname'];
@@ -32,6 +33,7 @@
 		}
 		catch (PDOException $e) 
 		{
+			echo 'exception';
 			echo '<pre>';
 			print_r($e);
 			echo '</pre>';

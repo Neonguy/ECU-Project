@@ -15,7 +15,8 @@
 			
 			if ($user) {
 				$hashedPassword = $user['password'];
-				if (password_verify($password, $hashedPassword)) {
+				//if (password_verify($password, $hashedPassword)) {
+				if ($password == $hashedPassword) {
 					echo "Password is correct!";
 					$_SESSION['username'] = $user['username'];
 					header('Location: AdminSection.php');
