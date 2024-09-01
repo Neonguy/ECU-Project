@@ -7,156 +7,39 @@
 	}
 	
 	$confirmationMessage = '';
+	
+	if (isset($_GET['addConcert'])) {
+		if ($_GET['addConcert'] == 'success') {
+			$confirmationMessage = 'Add Concert Successful.';
+		} elseif ($_GET['addConcert'] == 'error') {
+			$confirmationMessage = 'Add Concert Failed.';
+		} elseif ($_GET['addConcert'] == 'error') {
+			$confirmationMessage = 'Add Concert had data missing.';
+		}
+	}
+	if (isset($_GET['addVenue'])) {
+		if ($_GET['addVenue'] == 'success') {
+			$confirmationMessage = 'Add Venue Successful.';
+		} elseif ($_GET['addVenue'] == 'error') {
+			$confirmationMessage = 'Add Venue Failed.';
+		} elseif ($_GET['addVenue'] == 'error') {
+			$confirmationMessage = 'Add Venue had data missing.';
+		}
+	}
+	if (isset($_GET['addBand'])) {
+		if ($_GET['addBand'] == 'success') {
+			$confirmationMessage = 'Add Band Successful.';
+		} elseif ($_GET['addBand'] == 'error') {
+			$confirmationMessage = 'Add Band Failed.';
+		} elseif ($_GET['addBand'] == 'error') {
+			$confirmationMessage = 'Add Band had data missing.';
+		}
+	}
+	
 	// Variable to track which band/venue is being edited
 	$editBandId = null; 
 	$editvenueId = null;
 	$editconcertId = null;
-
-	// Check if the form has been submitted
-	if ($_POST && isset($_POST['bandName'])) {
-		// Get the band name from the form
-		$bandName = trim($_POST['bandName']);
-
-		// Check if the band name is not empty
-		if (!empty($bandName)) 
-		{
-			try 
-			{
-				// Prepare the SQL statement to insert the band name
-				$stmt = $db->prepare("INSERT INTO band (band_name) VALUES (:band_name)");
-
-				// Bind the parameter to the SQL query
-				$stmt->bindParam(':band_name', $bandName);
-
-				// Execute the query
-				if ($stmt->execute()) 
-				{
-					// Redirect to AdminSection.php with a success message
-					header("Location: AdminSection.php?status=success");
-					exit();
-				} 
-				else 
-				{
-					// Redirect to AdminSection.php with an error message
-					header("Location: AdminSection.php?status=error");
-					exit();
-				}
-			} 
-			catch (PDOException $e) 
-			{
-				// Redirect to AdminSection.php with an error message
-				header("Location: AdminSection.php?status=error");
-				exit();
-			}
-		} 
-		else 
-		{
-			// Redirect to AdminSection.php with a validation message
-			header("Location: AdminSection.php?status=empty");
-			exit();
-		}
-	}
-	// Check if the form has been submitted
-	if ($_POST && isset($_POST['venueName'])) {
-		// Get the venue name from the form
-		$venueName = trim($_POST['venueName']);
-
-		// Check if the venue name is not empty
-		if (!empty($venueName)) 
-		{
-			try 
-			{
-				// Prepare the SQL statement to insert the venue name
-				$stmt = $db->prepare("INSERT INTO venue (venue_name) VALUES (:venue_name)");
-
-				// Bind the parameter to the SQL query
-				$stmt->bindParam(':venue_name', $venueName);
-
-				// Execute the query
-				if ($stmt->execute()) 
-				{
-					// Redirect to AdminSection.php with a success message
-					header("Location: AdminSection.php?status=success");
-					exit();
-				} 
-				else 
-				{
-					// Redirect to AdminSection.php with an error message
-					header("Location: AdminSection.php?status=error");
-					exit();
-				}
-			} 
-			catch (PDOException $e) 
-			{
-				// Redirect to AdminSection.php with an error message
-				header("Location: AdminSection.php?status=error");
-				exit();
-			}
-		} 
-		else 
-		{
-			// Redirect to AdminSection.php with a validation message
-			header("Location: AdminSection.php?status=empty");
-			exit();
-		}
-	}
-	// Check if the form has been submitted
-	if ($_POST && isset($_POST['bandSelect']) && isset($_POST['venueSelect']) && isset($_POST['concert_date'])) {
-		  
-		// Get the venue name from the form
-		$band_id = trim($_POST['bandSelect']);
-		$venue_id = trim($_POST['venueSelect']);
-		$concert_date = trim($_POST['concert_date']);
-		$concert_id = trim($_POST['concert_id']);
-		$adult = isset($_POST['adult']) ? 'Y' : 'N';
-
-		
-		// Check if required values are not empty
-		if (!empty($band_id) && !empty($venue_id) && !empty($concert_date)) {
-			try {
-				if (!empty($concert_id)) {
-					// If concert_id exists, update the existing concert details
-					$stmt = $db->prepare("UPDATE concert SET band_id = :band_id, venue_id = :venue_id, concert_date = :concert_date, adult = :adult WHERE concert_id = :concert_id");
-					$stmt->bindParam(':concert_id', $concert_id);
-				} else {
-					// If concert_id does not exist, insert a new concert
-					$stmt = $db->prepare("INSERT INTO concert (band_id, venue_id, concert_date, adult) VALUES (:band_id, :venue_id, :concert_date, :adult)");
-				}
-
-				// Bind the parameters to the SQL query
-				$stmt->bindParam(':band_id', $band_id);
-				$stmt->bindParam(':venue_id', $venue_id);
-				$stmt->bindParam(':concert_date', $concert_date);
-				$stmt->bindParam(':adult', $adult);
-
-				// Execute the query
-				if ($stmt->execute()) 
-				{
-					// Redirect to AdminSection.php with a success message
-					header("Location: AdminSection.php?status=success");
-					exit();
-				} 
-				else 
-				{
-					// Redirect to AdminSection.php with an error message
-					header("Location: AdminSection.php?status=error");
-					exit();
-				}
-			} 
-			catch (PDOException $e) 
-			{
-				// Redirect to AdminSection.php with an error message
-				header("Location: AdminSection.php?status=error");
-				exit();
-			}
-		} 
-		else 
-		{
-			// Redirect to AdminSection.php with a validation message
-			header("Location: AdminSection.php?status=empty");
-			exit();
-		}
-	}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -207,6 +90,7 @@
             <section class="admin-area">
                 <center>
                     <h2>Admin Menu</h2>
+					<hr>
                     <ul>
                         <li>Manage Bands <input type="radio" name="menu" value="bands" onclick="changeLayout('bands')"></li>
                         <li>Manage Venues <input type="radio" name="menu" value="venues" onclick="changeLayout('venues')"></li>
@@ -220,7 +104,8 @@
                     <div class="add-new-band">
                         <center>
                         <h2>Add New Band</h2>
-                        <form id="addBandForm" method="post" action="AdminSection.php" onsubmit="return validateBand()">
+					<hr>
+                        <form id="addBandForm" method="post" action="ProcessAdmin.php" onsubmit="return validateBand()">
                             <input type="text" id="bandName" name="bandName" placeholder="Band Name">
                             <button type="submit">Add Band</button>
                         </form>
@@ -261,7 +146,7 @@
 											} 
 											else 
 											{
-												$confirmationMessage = "Failed to delete the band.";
+												$confirmationMessage = "Failed to delete the Band.";
 											}
 										}
 									} 
@@ -374,7 +259,8 @@
                     <div class="add-new-band">
                         <center>
                         <h2>Add New Venue</h2>
-                        <form id="addVenueForm" method="post" action="AdminSection.php" onsubmit="return validateVenue()">
+					<hr>
+                        <form id="addVenueForm" method="post" action="ProcessAdmin.php" onsubmit="return validateVenue()">
                             <input type="text" id="venueName" name="venueName" placeholder="Venue Name">
                             <button type="submit">Add Venue</button>
                         </form>
@@ -411,11 +297,11 @@
 
 											if ($stmt->rowCount() > 0) 
 											{
-												$confirmationMessage = "venue deleted successfully.";
+												$confirmationMessage = "Venue deleted successfully.";
 											} 
 											else 
 											{
-												$confirmationMessage = "Failed to delete the venue.";
+												$confirmationMessage = "Failed to delete the Venue.";
 											}
 										}
 									} 
@@ -440,11 +326,11 @@
 
 											if ($stmt->rowCount() > 0) 
 											{
-												$confirmationMessage = "venue name updated successfully.";
+												$confirmationMessage = "Venue name updated successfully.";
 											} 
 											else 
 											{
-												$confirmationMessage = "Failed to update the venue name.";
+												$confirmationMessage = "Failed to update the Venue name.";
 											}			
 										} 
 										catch (PDOException $e) 
@@ -454,7 +340,7 @@
 									} 
 									else 
 									{
-										$confirmationMessage = "venue name cannot be empty.";
+										$confirmationMessage = "Venue name cannot be empty.";
 									}
 								}
 
@@ -536,16 +422,18 @@
 						}
 						if ($editconcertId != null) 
 						{
-							echo 'Edit Concert ' . $editconcertId;
+							echo '<h1>Edit Concert ' . $editconcertId . '</h1>';
+									echo '<hr>';
 						}
 						else
 						{
-							echo 'Add New Concert';
+							echo '<h1>Add New Concert</h1>';
+									echo '<hr>';
 						}
 					?>
 					</h2>
                     <div class="add-new-band">
-                        <form id="addConcertForm" method="post" action="AdminSection.php" onsubmit="return validateConcert()">
+                        <form id="addConcertForm" method="post" action="ProcessAdmin.php" onsubmit="return validateConcert()">
 							<select name="bandSelect" required>
 								<option value="" selected disabled>Select a Band</option>
 								 <?php
@@ -633,7 +521,7 @@
 										} 
 										else 
 										{
-											$confirmationMessage = "Failed to delete the concert.";
+											$confirmationMessage = "Failed to delete the Concert.";
 										}
 									} 
 									catch (PDOException $e) 

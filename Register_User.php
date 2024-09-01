@@ -10,6 +10,7 @@
 		$first_name = trim($_POST['first_name']);
 		$surname = trim($_POST['surname']);
 		$password = trim($_POST['password']);
+		$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 		$dob = trim($_POST['date_of_birth']);
 
 		// Check if the venue name is not empty
@@ -24,7 +25,7 @@
 				$stmt->bindParam(':mobile_number', $mobile_number);
 				$stmt->bindParam(':first_name', $first_name);
 				$stmt->bindParam(':surname', $surname);
-				$stmt->bindParam(':password', $password);
+				$stmt->bindParam(':password', $hashedPassword);
 				$stmt->bindParam(':dob', $dob);
 
 				// Execute the query

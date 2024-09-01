@@ -15,7 +15,7 @@
 		echo $e->getMessage();
 		exit;
 	} 
-  
+	
 	function displayConcert($concert) {
 		if ($concert) {
 			
@@ -74,9 +74,10 @@
 			}
 		} 
 	}
-	function displayBookingButton($concert) {
+	function displayBookingButton($concert,$bookedConcertIds) {
 		if ($concert) {
-			
+						
+	
 			// Convert the date to Australian format (DD/MM/YYYY Hours:Minutes:Seconds)
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
@@ -84,16 +85,24 @@
 			// Check if the concert date is in the past or today
 			if ($concertDate >= $current_date) {
 				
-				
-				echo '<div class="actions">';
-				
-					// cancel button
+				if (!in_array($concert['concert_id'], $bookedConcertIds)) {
+					echo '<div class="actions">';
+					
+						// cancel button
+						echo '<form method="POST" action="ProcessBooking.php" style="display:inline;">';
+						echo '<input type="hidden" name="make_booking_id" value="' . $concert['concert_id'] . '">';
+						echo '<button name="book">Book</button>';
+						echo '</form>';
+					echo '</div>';
+				}
+				else 
+				{
+					// Hidden button to maintain alignment
 					echo '<form method="POST" style="display:inline;">';
-					echo '<input type="hidden" name="cancel_booking_id" value="' . $concert['concert_id'] . '">';
-					echo '<button name="book">Book</button>';
+					echo '<input type="hidden" name="make_booking_id" value="' . $concert['concert_id'] . '">';
+					echo '<button name="hidden" style="visibility:hidden;">Hidden</button>';
 					echo '</form>';
-				echo '</div>';
-				
+				}
 			}
 		} 
 	} 
@@ -112,7 +121,7 @@
 				echo '<div class="actions">';
 				
 					// cancel button
-					echo '<form method="POST" style="display:inline;">';
+					echo '<form method="POST" action="ProcessBooking.php" style="display:inline;">';
 					echo '<input type="hidden" name="cancel_booking_id" value="' . $concert['booking_id'] . '">';
 					echo '<button name="cancel"onclick="return confirm(\'Are you sure you want to delete this thread?\')">Cancel</button>';
 					echo '</form>';

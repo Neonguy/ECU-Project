@@ -9,11 +9,11 @@
 	
 	if (isset($_GET['status'])) {
 		if ($_GET['status'] == 'success') {
-			$confirmationMessage = 'Login Successful.';
+			$confirmationMessage = 'Registration Successful.';
 		} elseif ($_GET['status'] == 'error') {
-			$confirmationMessage = 'Login Failed.';
+			$confirmationMessage = 'Registration Failed.';
 		} elseif ($_GET['status'] == 'empty') {
-			$confirmationMessage = 'Please fill in all required fields to log in.';
+			$confirmationMessage = 'Please fill in all required fields.';
 		}
 	}
 ?>

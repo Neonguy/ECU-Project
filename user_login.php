@@ -9,14 +9,21 @@
 		
 		try 
 		{
-			$stmt = $db->prepare("SELECT * FROM attendee WHERE mobile_number = ? AND password = ?");
-			$stmt->execute([$mobile_number, $password]);
+			$stmt = $db->prepare("SELECT * FROM attendee WHERE mobile_number = ?");
+			$stmt->execute([$mobile_number]);
 			$user = $stmt->fetch();
 			
 			if ($user) {
-				$_SESSION['mobile'] = $user['mobile_number'];
-				$_SESSION['real_name'] = $user['first_name'] . ' ' . $user['surname'];
-				header('Location: AttendeeSection.php?status=success');
+				$hashedPassword = $user['password'];
+				if (password_verify($password, $hashedPassword)) {
+					echo "Password is correct!";
+					$_SESSION['mobile'] = $user['mobile_number'];
+					$_SESSION['real_name'] = $user['first_name'] . ' ' . $user['surname'];
+					header('Location: AttendeeSection.php');
+				} else {
+					header('Location: PublicSection.php?status=error');
+				}
+				
 			}
 			else
 			{

@@ -9,17 +9,24 @@
 		
 		try 
 		{
-			$stmt = $db->prepare("SELECT * FROM admin WHERE username = ? AND password = ?");
-			$stmt->execute([$user_name, $password]);
+			$stmt = $db->prepare("SELECT * FROM admin WHERE username = ?");
+			$stmt->execute([$user_name]);
 			$user = $stmt->fetch();
 			
 			if ($user) {
-				$_SESSION['username'] = $user['username'];
-				header('Location: AdminSection.php');
+				$hashedPassword = $user['password'];
+				if (password_verify($password, $hashedPassword)) {
+					echo "Password is correct!";
+					$_SESSION['username'] = $user['username'];
+					header('Location: AdminSection.php');
+				} else {
+					echo '<center><h1>Invalid Credentials </h1></center>';
+				}
+				
 			}
 			else
 			{
-				echo '<center><h1>Invalid Credentials</h1></center>';
+				echo '<center><h1>Invalid User </h1></center>';
 			}
 		}
 		catch (PDOException $e) 
