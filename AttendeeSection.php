@@ -12,6 +12,8 @@
 			$confirmationMessage = 'Add Booking Successful.';
 		} elseif ($_GET['book'] == 'failed') {
 			$confirmationMessage = 'Add Booking Failed.';
+		} elseif ($_GET['book'] == 'overbooked') {
+			$confirmationMessage = 'Add Booking Failed. (Maximum Bookings Reached)';
 		}
 	}
 	if (isset($_GET['delete'])) {
@@ -46,8 +48,14 @@
 
 	$bookedConcertIds = [];
 	foreach ($allBookings as $row) {
-		$bookedConcertIds[] = $row['concert_id'];
-	}			
+		$concertDate = new DateTime($row['concert_date']);
+		$current_date = new DateTime();
+		
+		// Check if the concert date is in the past or today
+		if ($concertDate >= $current_date) {
+			$bookedConcertIds[] = $row['concert_id'];
+		}
+	}
 	
 ?>
 <!DOCTYPE html>

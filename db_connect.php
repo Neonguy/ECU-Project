@@ -5,11 +5,10 @@
 	
 	session_start();
 	// Connect to database server
-	try
-	{ 
-	$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
+	try { 
+		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
 	}
-		catch (PDOException $e) 
+	catch (PDOException $e) 
 	{
 		echo 'Error connecting to database server:<br />';
 		echo $e->getMessage();
@@ -23,12 +22,15 @@
 						LEFT JOIN booking j ON c.concert_id = j.concert_id
 						GROUP BY c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult
 						ORDER BY c.concert_date");
-											
-											
+		
+	// set max bookings for advanced.
+	// set as variable to not hardcode it in main submission	
+	$maxBookings = 2000;
+	
 	function displayConcert($concert) {
 		if ($concert) {
 			
-			// Convert the date to Australian format (DD/MM/YYYY Hours:Minutes:Seconds)
+			// Convert the date to Australian format
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 
@@ -61,7 +63,7 @@
 	function displayConcertButtons($concert) {
 		if ($concert) {
 			
-			// Convert the date to Australian format (DD/MM/YYYY Hours:Minutes:Seconds)
+			// Convert the date to Australian format
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 
@@ -89,16 +91,18 @@
 	}
 	function displayBookingButton($concert,$bookedConcertIds) {
 		if ($concert) {
-						
+			
+			// bring the max bookings into a usable state
+			global $maxBookings;
 	
-			// Convert the date to Australian format (DD/MM/YYYY Hours:Minutes:Seconds)
+			// Convert the date to Australian format
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 
 			// Check if the concert date is in the past or today
 			if ($concertDate >= $current_date) {
 				
-				if (!in_array($concert['concert_id'], $bookedConcertIds) && ($concert['tickets_sold'] < $concert['capacity'] ||$concert['capacity'] == 0)) {
+				if ((count($bookedConcertIds) < $maxBookings) && !in_array($concert['concert_id'], $bookedConcertIds) && ($concert['tickets_sold'] < $concert['capacity'] || $concert['capacity'] == 0)) {
 					echo '<div class="actions">';
 					
 						// cancel button
@@ -123,7 +127,7 @@
 	function displayCancelButtons($concert) {
 		if ($concert) {
 			
-			// Convert the date to Australian format (DD/MM/YYYY Hours:Minutes:Seconds)
+			// Convert the date to Australian format
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 
