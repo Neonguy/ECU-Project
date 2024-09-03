@@ -8,8 +8,7 @@
 	try { 
 		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
 	}
-	catch (PDOException $e) 
-	{
+	catch (PDOException $e) {
 		echo 'Error connecting to database server:<br />';
 		echo $e->getMessage();
 		exit;
@@ -30,10 +29,10 @@
 	function displayConcert($concert) {
 		if ($concert) {
 			
-			// Convert the date to Australian format
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 
+			// Convert the date to Australian format
 			// Check if the concert date is in the past or today
 			if ($concertDate >= $current_date) {
 				$formattedDate = $concertDate->format('d/m/Y H:i');
@@ -53,9 +52,7 @@
 				}
 				echo '</div>';
 			}
-		} 
-		else 
-		{
+		} else {
 			echo '<p>No concert details available.</p>';
 		}
 	}
@@ -63,7 +60,6 @@
 	function displayConcertButtons($concert) {
 		if ($concert) {
 			
-			// Convert the date to Australian format
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 
@@ -95,25 +91,25 @@
 			// bring the max bookings into a usable state
 			global $maxBookings;
 	
-			// Convert the date to Australian format
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 
 			// Check if the concert date is in the past or today
 			if ($concertDate >= $current_date) {
 				
-				if ((count($bookedConcertIds) < $maxBookings) && !in_array($concert['concert_id'], $bookedConcertIds) && ($concert['tickets_sold'] < $concert['capacity'] || $concert['capacity'] == 0)) {
+				if ((count($bookedConcertIds) < $maxBookings) && 
+				!in_array($concert['concert_id'], $bookedConcertIds) && 
+				($concert['tickets_sold'] < $concert['capacity'] || $concert['capacity'] == 0)) {
+					
 					echo '<div class="actions">';
 					
-						// cancel button
+						// book button
 						echo '<form method="POST" action="ProcessBooking.php" style="display:inline;">';
 						echo '<input type="hidden" name="make_booking_id" value="' . $concert['concert_id'] . '">';
 						echo '<button name="book">Book</button>';
 						echo '</form>';
 					echo '</div>';
-				}
-				else 
-				{
+				} else {
 					// Hidden button to maintain alignment
 					echo '<form method="POST" style="display:inline;">';
 					echo '<button name="book" style="visibility:hidden">Book</button>';
@@ -126,7 +122,6 @@
 	function displayCancelButtons($concert) {
 		if ($concert) {
 			
-			// Convert the date to Australian format
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 

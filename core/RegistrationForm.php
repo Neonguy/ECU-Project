@@ -63,8 +63,7 @@
 
 		<?php
 			// Display the confirmation message
-			if ($confirmationMessage) 
-			{
+			if ($confirmationMessage) {
 				echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
 			}
 		?>
@@ -83,7 +82,8 @@ function validateForm() {
 
 	var today = new Date();
 	var dobDate = new Date(date_of_birth);
-	var minAge = 14;
+	// not sure if this is required
+	var minAge = 0;
 	
     // Validate mobile number
     var mobilePattern = /^\+?([0-9]{1,3})\)?[-. ]?([0-9]{9,10})$/;
@@ -106,9 +106,7 @@ function validateForm() {
 		alert("Date of birth cannot be empty.");
 		doc.date_of_birth.style.borderColor = "red";
         return false;
-	} 
-	else 
-	{
+	} else {
 		var age = today.getFullYear() - dobDate.getFullYear();
 		var m = today.getMonth() - dobDate.getMonth();
 		if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
@@ -119,9 +117,7 @@ function validateForm() {
 			doc.date_of_birth.style.borderColor = "red";
 			alert("You must be at least " + minAge + " years old to register.");
 			return false;
-		}
-		else
-		{
+		} else {
 			doc.date_of_birth.style.borderColor = "";
 		}
 	}
