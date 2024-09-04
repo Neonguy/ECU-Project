@@ -74,16 +74,8 @@
 function validateForm() {
     var doc = document.registrationForm;
     var mobile_number = doc.mobile_number.value;
-    var first_name = doc.first_name.value;
-    var surname = doc.surname.value;
     var password = doc.password.value;
     var confirm_password = doc.confirm_password.value;
-    var date_of_birth = doc.date_of_birth.value;
-
-	var today = new Date();
-	var dobDate = new Date(date_of_birth);
-	// not sure if this is required
-	var minAge = 0;
 	
     // Validate mobile number
     var mobilePattern = /^\+?([0-9]{1,3})\)?[-. ]?([0-9]{9,10})$/;
@@ -101,26 +93,6 @@ function validateForm() {
         alert("Passwords do not match.");
         return false;
     }
-	
-	if (date_of_birth === "") {
-		alert("Date of birth cannot be empty.");
-		doc.date_of_birth.style.borderColor = "red";
-        return false;
-	} else {
-		var age = today.getFullYear() - dobDate.getFullYear();
-		var m = today.getMonth() - dobDate.getMonth();
-		if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
-			age--;
-		}
-		
-		if (age < minAge) {
-			doc.date_of_birth.style.borderColor = "red";
-			alert("You must be at least " + minAge + " years old to register.");
-			return false;
-		} else {
-			doc.date_of_birth.style.borderColor = "";
-		}
-	}
 
     return true;
 }
