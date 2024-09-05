@@ -112,8 +112,8 @@
 						}
 					?>
 					<ul>
-						<li>View Concerts <input type="radio" name="attendee" value="concerts" onclick="adminChangeLayout('concerts')"></li>
-						<li>Your Bookings <input type="radio" name="attendee" value="bookings" onclick="adminChangeLayout('bookings')"></li>
+						<li>View Concerts <input type="radio" name="attendee" value="concerts" onclick="attendeeChangeLayout('concerts')"></li>
+						<li>Your Bookings <input type="radio" name="attendee" value="bookings" onclick="attendeeChangeLayout('bookings')"></li>
 						<li><a href="logout.php">Log Out</a></li>
 					</ul>
 					

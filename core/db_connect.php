@@ -6,7 +6,7 @@
 	session_start();
 	// Connect to database server
 	try { 
-		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
+		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development (Core)', 'root', '');
 	}
 	catch (PDOException $e) {
 		echo 'Error connecting to database server:<br />';
