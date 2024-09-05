@@ -181,46 +181,56 @@
 	</div>
 	<script>
 				
-		function adminChangeLayout(layoutType) 
-		{
-			// Hide all layouts
+		// Function to change the layout based on the selected option
+		// Requires layout and layout.active in style code for it to work properly
+		function attendeeChangeLayout(layoutType) {
+
+			// Hide all layouts by removing the 'active' class from each
 			var layouts = document.querySelectorAll('.layout');
-			layouts.forEach(function(layout) 
-			{
+			layouts.forEach(function(layout) {
 				layout.classList.remove('active');
 			});
 
-			// Show the selected layout
+			// Show the selected layout by adding the 'active' class
 			var selectedLayout = document.getElementById(layoutType);
-			if (selectedLayout) 
-			{
+			if (selectedLayout) {
 				selectedLayout.classList.add('active');
 			}
 
-			// Save the selected layout to localStorage
-			localStorage.setItem('adminMenu', layoutType);
+			// Save the selected layout type to localStorage for future use
+			// ... possibly swap to sessions....
+			// Save by key and value, "strored name", stored value
+			localStorage.setItem('attendeeMenu', layoutType);
 		}
+		
+		// made to keep the radio button selected after the form post changes pages.
+		// Wait for the entire page to load before executing script
+		document.addEventListener('DOMContentLoaded', function() {
 
-		document.addEventListener('DOMContentLoaded', function() 
-		{
-			// Retrieve the selected layout from localStorage
-			var adminMenu = localStorage.getItem('adminMenu');
-			if (adminMenu) 
-			{
-				// Set the corresponding radio button as checked
-				var radio = document.querySelector('input[name="attendee"][value="' + adminMenu + '"]');
-				if (radio) 
-				{
+			// Retrieve the previously selected attendee menu (if any) from localStorage
+			// Attendee menu was just section named from the page
+			// Call by key for value, key in string form "name" = stored value
+			var attendeeMenu = localStorage.getItem('attendeeMenu');
+
+			// Check if a value for attendeeMenu exists in localStorage
+			// Possible to use session info, but why change something that works.
+			if (attendeeMenu) {
+				// Find the radio button that corresponds to the saved attendeeMenu value
+				
+				var radio = document.querySelector('input[name="attendee"][value="' + attendeeMenu + '"]');
+				
+				// If the corresponding radio button is found, set it as checked
+				if (radio) {
 					radio.checked = true;
 				}
 
-				// Display the selected layout
-				adminChangeLayout(adminMenu);
-			} 
-			else 
-			{
-				// If no value is stored, default to showing the first layout (optional)
-				adminChangeLayout('concerts'); // Set default if no previous selection exists
+				// Call a function to display the layout for the selected attendee option
+				// re set it to be sure basicly
+				attendeeChangeLayout(attendeeMenu);
+			} else {
+				// If no saved value in localStorage, set the default layout (in this case, 'concerts')
+				// This sets a default layout when no prior selection exists
+				attendeeChangeLayout('concerts'); 
 			}
 		});
 	</script>

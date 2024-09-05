@@ -93,9 +93,9 @@
                     <h2>Admin Menu</h2>
 					<hr>
                     <ul>
-                        <li>Manage Bands <input type="radio" name="menu" value="bands" onclick="changeLayout('bands')"></li>
-                        <li>Manage Venues <input type="radio" name="menu" value="venues" onclick="changeLayout('venues')"></li>
-                        <li>Manage Concerts <input type="radio" name="menu" value="concert" onclick="changeLayout('concert')"></li>
+                        <li>Manage Bands <input type="radio" name="admin" value="bands" onclick="adminChangeLayout('bands')"></li>
+                        <li>Manage Venues <input type="radio" name="admin" value="venues" onclick="adminChangeLayout('venues')"></li>
+                        <li>Manage Concerts <input type="radio" name="admin" value="concert" onclick="adminChangeLayout('concert')"></li>
                         <li><a href="logout.php">Log Out</a></li>
                     </ul>
                 </center>
@@ -317,7 +317,7 @@
 									$newvenueName = trim($_POST['new_venue_name']);
 									$venueCapacity = intval($_POST['new_venue_capacity']);
 
-									if (!empty($newvenueName) && $venueCapacity > 0) {
+									if (!empty($newvenueName)) {
 
 										// Fetch the highest number of tickets sold for any concert at the venue
 										// Find highest concert booked and use that as threshold for capacity
@@ -590,48 +590,68 @@
     <script >
 	
 		
-        function changeLayout(layoutType) 
-		{
-            // Hide all layouts
-            var layouts = document.querySelectorAll('.layout');
-            layouts.forEach(function(layout) 
-			{
-                layout.classList.remove('active');
-            });
+        // Function to change the layout based on the selected option
+		// Requires layout and layout.active in style code for it to work properly
+		function adminChangeLayout(layoutType) {
 
-            // Show the selected layout
-            var selectedLayout = document.getElementById(layoutType);
-            if (selectedLayout) 
-			{
-                selectedLayout.classList.add('active');
-            }
+			// Hide all layouts by removing the 'active' class from each
+			var layouts = document.querySelectorAll('.layout');
+			layouts.forEach(function(layout) {
+				layout.classList.remove('active');
+			});
 
-            // Save the selected layout to localStorage
-            localStorage.setItem('selectedMenu', layoutType);
-        }
+			// Show the selected layout by adding the 'active' class
+			var selectedLayout = document.getElementById(layoutType);
+			if (selectedLayout) {
+				selectedLayout.classList.add('active');
+			}
 
-        document.addEventListener('DOMContentLoaded', function() 
-		{
-            // Retrieve the selected layout from localStorage
-            var selectedMenu = localStorage.getItem('selectedMenu');
-            if (selectedMenu) 
-			{
-                // Set the corresponding radio button as checked
-                var radio = document.querySelector('input[name="menu"][value="' + selectedMenu + '"]');
-                if (radio) 
-				{
-                    radio.checked = true;
-                }
+			// Save the selected layout type to localStorage for future use
+			// ... possibly swap to sessions....
+			// Save by key and value, "strored name", stored value
+			localStorage.setItem('adminMenu', layoutType);
+		}
+		
+		// made to keep the radio button selected after the form post changes pages.
+		// Wait for the entire page to load before executing script
+		document.addEventListener('DOMContentLoaded', function() {
 
-                // Display the selected layout
-                changeLayout(selectedMenu);
-            } 
-			else 
-			{
-                // If no value is stored, default to showing the first layout (optional)
-                changeLayout('bands'); // Set default if no previous selection exists
-            }
-        });
+			// Retrieve the previously selected Admin menu (if any) from localStorage
+			// adminMenu was just section named from the page
+			// Call by key for value, key in string form "name" = stored value
+			var adminMenu = localStorage.getItem('adminMenu');
+
+			// Check if a value for adminMenu exists in localStorage
+			// Possible to use session info, but why change something that works.
+			if (adminMenu) {
+				
+				// Find the radio button that corresponds to the saved adminMenu value
+				// <input type="radio" name="admin" value="bands" onclick="adminChangeLayout('bands')">
+				// Where adminMenu = 'bands'
+				// if it exists, set as checked and set layout
+				var radio = document.querySelector('input[name="admin"][value="' + adminMenu + '"]');
+				
+				// If the corresponding radio button is found, set it as checked
+				if (radio) {
+					radio.checked = true;
+				}
+
+				// Call a function to display the layout for the selected menu option
+				// re set it to be sure basicly
+				adminChangeLayout(adminMenu);
+			} else {
+				
+				// If no saved value in localStorage, set the default layout (in this case, 'bands')
+				// This sets a default layout when no prior selection exists
+				adminChangeLayout('bands'); 
+				
+				// Set it as default as it wouldnt have been set above.
+				var radio = document.querySelector('input[name="admin"][value="bands"]');
+				if (radio) {
+					radio.checked = true;
+				}
+			}
+		});
 		
 		function validateBand() 
 		{
