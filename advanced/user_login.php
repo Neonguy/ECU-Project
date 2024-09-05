@@ -21,11 +21,10 @@
 					$_SESSION['date_of_birth'] = $user['dob'];
 					header('Location: AttendeeSection.php');
 				} else {
-					header('Location: PublicSection.php?status=error');
+					header('Location: PublicSection.php?login=passworderror');
 				}
-				
 			} else {
-				header('Location: PublicSection.php?status=error');
+				header('Location: PublicSection.php?login=usererror');
 			}
 		}
 		catch (PDOException $e) {

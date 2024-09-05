@@ -14,21 +14,17 @@
 			$user = $stmt->fetch();
 			
 			if ($user) {
-				$hashedPassword = $user['password'];
-				//if (password_verify($password, $hashedPassword)) {
-				if ($password == $hashedPassword) {
+				$userpassword = $user['password'];
+				if ($password == $userpassword) {
 					echo "Password is correct!";
 					$_SESSION['mobile'] = $user['mobile_number'];
 					$_SESSION['real_name'] = $user['first_name'] . ' ' . $user['surname'];
 					header('Location: AttendeeSection.php');
 				} else {
-					header('Location: PublicSection.php?status=error');
+					header('Location: PublicSection.php?login=passworderror');
 				}
-				
-			}
-			else
-			{
-				header('Location: PublicSection.php?status=error');
+			} else {
+				header('Location: PublicSection.php?login=usererror');
 			}
 		}
 		catch (PDOException $e) 

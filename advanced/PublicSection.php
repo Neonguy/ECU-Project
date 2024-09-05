@@ -16,6 +16,13 @@
 			$confirmationMessage = 'Please fill in all required fields.';
 		}
 	}
+	if (isset($_GET['login'])) {
+		if ($_GET['login'] == 'passworderror') {
+			$confirmationMessage = 'Password Incorrect.';
+		} elseif ($_GET['login'] == 'usererror') {
+			$confirmationMessage = 'No User Found.';
+		}
+	}
 ?>
 
 <!DOCTYPE html>
