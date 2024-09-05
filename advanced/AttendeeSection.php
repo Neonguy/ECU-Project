@@ -41,7 +41,9 @@
 		JOIN band b ON c.band_id = b.band_id
 		JOIN venue v ON c.venue_id = v.venue_id
 		WHERE a.mobile_number = ?");
+		
 	$bookings->execute([$_SESSION['mobile']]);
+	
 	// this got messy calling the function to get ids...
 	// leave this part alone, we need to fetch all here
 	$allBookings = $bookings->fetchAll();	
@@ -232,6 +234,12 @@
 				// If no saved value in localStorage, set the default layout (in this case, 'concerts')
 				// This sets a default layout when no prior selection exists
 				attendeeChangeLayout('concerts'); 
+				
+				// Set it as default as it wouldnt have been set above.
+				var radio = document.querySelector('input[name="attendee"][value="concerts"]');
+				if (radio) {
+					radio.checked = true;
+				}
 			}
 		});
 	</script>

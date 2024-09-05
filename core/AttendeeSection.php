@@ -231,6 +231,12 @@
 				// If no saved value in localStorage, set the default layout (in this case, 'concerts')
 				// This sets a default layout when no prior selection exists
 				attendeeChangeLayout('concerts'); 
+				
+				// Set it as default as it wouldnt have been set above.
+				var radio = document.querySelector('input[name="attendee"][value="concerts"]');
+				if (radio) {
+					radio.checked = true;
+				}
 			}
 		});
 	</script>
