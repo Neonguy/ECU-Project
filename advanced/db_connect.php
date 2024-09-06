@@ -25,7 +25,7 @@
 	// set max bookings for advanced.
 	$maxBookings = 2;
 	
-	function displayConcert($concert) {
+	function displayConcert($concert,$showAll) {
 		if ($concert) {
 			
 			$concertDate = new DateTime($concert['concert_date']);
@@ -33,7 +33,7 @@
 
 			// Convert the date to Australian format
 			// Check if the concert date is in the past or today
-			if ($concertDate >= $current_date) {
+			if ($concertDate >= $current_date or !empty($showAll)) {
 				$formattedDate = $concertDate->format('d/m/Y H:i');
 				
 				echo '<li>';
@@ -56,14 +56,14 @@
 		}
 	}
 	
-	function displayConcertButtons($concert) {
+	function displayConcertButtons($concert,$showAll) {
 		if ($concert) {
 			
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();
 
 			// Check if the concert date is in the past or today
-			if ($concertDate >= $current_date) {
+			if ($concertDate >= $current_date or !empty($showAll)) {
 				
 				
 				echo '<div class="actions">';

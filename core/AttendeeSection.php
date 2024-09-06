@@ -132,7 +132,7 @@
 							echo '<ul>';
 							foreach ($concerts as $row) 
 							{	
-								displayConcert($row);
+								displayConcert($row,false);
 								displayBookingButton($row,$bookedConcertIds);
 							}
 							echo '</ul>';
@@ -157,7 +157,7 @@
 							
 							echo '<ul>';
 							foreach ($allBookings as $row) {
-								displayConcert($row);
+								displayConcert($row,false);
 								displayCancelButtons($row);
 							}
 							echo '</ul>';

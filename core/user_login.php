@@ -19,6 +19,7 @@
 					echo "Password is correct!";
 					$_SESSION['mobile'] = $user['mobile_number'];
 					$_SESSION['real_name'] = $user['first_name'] . ' ' . $user['surname'];
+					$_SESSION['date_of_birth'] = $user['dob'];
 					header('Location: AttendeeSection.php');
 				} else {
 					header('Location: PublicSection.php?login=passworderror');

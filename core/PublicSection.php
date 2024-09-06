@@ -89,7 +89,7 @@
 							echo '<ul>';
 							foreach ($result as $row) {
 								
-								displayConcert($row);
+								displayConcert($row,false);
 							}
 							echo '</ul>';
 						}

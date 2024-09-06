@@ -561,8 +561,8 @@
 										
 										foreach ($result as $row) {  
 								
-											displayConcert($row);
-											displayConcertButtons($row);
+											displayConcert($row,true);
+											displayConcertButtons($row,true);
 											
 											echo '</li>';
 										}
