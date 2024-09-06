@@ -82,7 +82,7 @@
 							JOIN band b ON c.band_id = b.band_id
 							JOIN venue v ON c.venue_id = v.venue_id
 							LEFT JOIN booking j ON c.concert_id = j.concert_id
-							GROUP BY c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult
+							GROUP BY c.concert_id
 							ORDER BY c.concert_date");
 
 						if ($result && $result->rowCount() > 0) {

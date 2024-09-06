@@ -8,8 +8,7 @@
 	try { 
 		$db = new PDO('mysql:host=localhost;port=6033;dbname=csg2431: interactive web development', 'root', '');
 	}
-	catch (PDOException $e) 
-	{
+	catch (PDOException $e) {
 		echo 'Error connecting to database server:<br />';
 		echo $e->getMessage();
 		exit;
@@ -20,7 +19,7 @@
 						JOIN band b ON c.band_id = b.band_id
 						JOIN venue v ON c.venue_id = v.venue_id
 						LEFT JOIN booking j ON c.concert_id = j.concert_id
-						GROUP BY c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult
+						GROUP BY c.concert_id
 						ORDER BY c.concert_date");
 		
 	// set max bookings for advanced.
@@ -53,9 +52,7 @@
 				}
 				echo '</div>';
 			}
-		} 
-		else 
-		{
+		} else {
 			echo '<p>No concert details available.</p>';
 		}
 	}
@@ -111,9 +108,7 @@
 						echo '<button name="book">Book</button>';
 						echo '</form>';
 					echo '</div>';
-				}
-				else 
-				{
+				} else {
 					// Hidden button to maintain alignment
 					echo '<form method="POST" style="display:inline;">';
 					echo '<input type="hidden" name="make_booking_id" value="' . $concert['concert_id'] . '">';
@@ -133,7 +128,6 @@
 
 			// Check if the concert date is in the past or today
 			if ($concertDate >= $current_date) {
-				
 				
 				echo '<div class="actions">';
 				
