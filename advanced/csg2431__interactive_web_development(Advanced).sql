@@ -43,8 +43,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`username`, `password`) VALUES
-('admin', ' $2a$12$isX/D7vYAwMW6s1JhIkhv.f6xrcuJgoS5r1pC8RTtOuNvq33cfuci '),
-('Sebbs', '12345678');
+('Sebbs', '$2y$10$cS6Wlz5RcYv2oKGqBOpPBOMujDE09GzDNVDyHw8eMjPBxFhKxLAEm'),
+('admin', '$2a$12$isX/D7vYAwMW6s1JhIkhv.f6xrcuJgoS5r1pC8RTtOuNvq33cfuci');
 
 -- --------------------------------------------------------
 
@@ -78,8 +78,8 @@ INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`, `d
 ('0405896324', 'Sarah', 'Collier', '$2y$10$yvbse7FAddRO9JwVJCLmlet.vFVunY5LPtzlYcoGiqP.1I.1rVkpe', '2024-09-28'),
 ('0406649884', 'Rachel', 'Stark', '$2y$10$IaMt4zdwnQHpPUSyqJBgtOdo8wemncOgjTUZoSt6cs4jyhDQisGIS', '2024-09-28'),
 ('0407788149', 'Jessica', 'Bell', '$2y$10$cS6Wlz5RcYv2oKGqBOpPBOMujDE09GzDNVDyHw8eMjPBxFhKxLAEm', '2024-09-28'),
-('0413062101', 'David', 'Denholm', '12345678', '1983-07-17'),
-('0413062102', 'David', 'Denholm', '12345678', '2013-07-26'),
+('0413062101', 'David', 'Denholm', '$2y$10$cS6Wlz5RcYv2oKGqBOpPBOMujDE09GzDNVDyHw8eMjPBxFhKxLAEm', '1983-07-17'),
+('0413062102', 'David', 'Denholm', '$2y$10$cS6Wlz5RcYv2oKGqBOpPBOMujDE09GzDNVDyHw8eMjPBxFhKxLAEm', '2013-07-26'),
 ('0413062201', 'Test', 'User', '$2y$10$uA4GIb3TMt9XJ6Qqm4Pt2O86ywAxkT3312p.ULxohYtSwYI59IHWK', '2009-01-03');
 
 -- --------------------------------------------------------
@@ -175,7 +175,9 @@ CREATE TABLE `concert` (
 --
 
 INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`, `adult`) VALUES
-(11, 15, 7, '2024-09-29 22:00:00', 'N'),
+(9, 15, 7, '2024-08-28 22:00:00', 'Y'),
+(10, 15, 7, '2024-09-03 22:00:00', 'Y'),
+(11, 15, 7, '2024-09-29 22:00:00', 'Y'),
 (12, 16, 5, '2024-11-02 21:30:00', 'N'),
 (14, 14, 5, '2024-11-08 22:10:00', 'N'),
 (15, 14, 5, '2024-10-18 10:10:00', 'N'),

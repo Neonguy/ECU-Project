@@ -13,6 +13,10 @@ James Scott 981832
 ('0407788149', '12345678'),
 ('0413062201', '12345678');
 
+`admin` (`username`, `password`)
+('Sebbs', '12345678');
+('admin', 'admin');
+
 Resources
 https://www.w3schools.com/
 https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
