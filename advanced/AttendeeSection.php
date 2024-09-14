@@ -128,11 +128,9 @@
 					<hr>
 					<div class="current-bands">
 					<?php
-						if ($concerts && $concerts->rowCount() > 0) 
-						{
+						if ($concerts && $concerts->rowCount() > 0) {
 							echo '<ul>';
-							foreach ($concerts as $row) 
-							{	
+							foreach ($concerts as $row) {	
 								displayConcert($row,false);
 								displayBookingButton($row,$bookedConcertIds);
 							}
@@ -174,8 +172,7 @@
 		</div>
 			<?php
 				// Display the confirmation message
-				if ($confirmationMessage) 
-				{
+				if ($confirmationMessage) {
 					echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
 				}
 			?>

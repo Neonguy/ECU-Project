@@ -30,8 +30,7 @@
 				echo '<center><h1>Invalid User </h1></center>';
 			}
 		}
-		catch (PDOException $e) 
-		{
+		catch (PDOException $e) {
 			echo 'exception';
 			echo '<pre>';
 			print_r($e);

@@ -12,10 +12,8 @@
 		$bandName = trim($_POST['bandName']);
 
 		// Check if the band name is not empty
-		if (!empty($bandName)) 
-		{
-			try 
-			{
+		if (!empty($bandName)) {
+			try {
 				// Prepare the SQL statement to insert the band name
 				$stmt = $db->prepare("INSERT INTO band (band_name) VALUES (:band_name)");
 
@@ -23,28 +21,22 @@
 				$stmt->bindParam(':band_name', $bandName);
 
 				// Execute the query
-				if ($stmt->execute()) 
-				{
+				if ($stmt->execute()) {
 					// Redirect to AdminSection.php with a success message
 					header("Location: AdminSection.php?addBand=success");
 					exit();
-				} 
-				else 
-				{
+				} else {
 					// Redirect to AdminSection.php with an error message
 					header("Location: AdminSection.php?addBand=error");
 					exit();
 				}
 			} 
-			catch (PDOException $e) 
-			{
+			catch (PDOException $e) {
 				// Redirect to AdminSection.php with an error message
 				header("Location: AdminSection.php?addBand=error");
 				exit();
 			}
-		} 
-		else 
-		{
+		} else {
 			// Redirect to AdminSection.php with a validation message
 			header("Location: AdminSection.php?addBand=empty");
 			exit();
@@ -56,10 +48,8 @@
 		$venueName = trim($_POST['venueName']);
 
 		// Check if the venue name is not empty
-		if (!empty($venueName)) 
-		{
-			try 
-			{
+		if (!empty($venueName)) {
+			try {
 				// Prepare the SQL statement to insert the venue name
 				$stmt = $db->prepare("INSERT INTO venue (venue_name) VALUES (:venue_name)");
 
@@ -67,28 +57,22 @@
 				$stmt->bindParam(':venue_name', $venueName);
 
 				// Execute the query
-				if ($stmt->execute()) 
-				{
+				if ($stmt->execute()) {
 					// Redirect to AdminSection.php with a success message
 					header("Location: AdminSection.php?addVenue=success");
 					exit();
-				} 
-				else 
-				{
+				} else {
 					// Redirect to AdminSection.php with an error message
 					header("Location: AdminSection.php?addVenue=error");
 					exit();
 				}
 			} 
-			catch (PDOException $e) 
-			{
+			catch (PDOException $e) {
 				// Redirect to AdminSection.php with an error message
 				header("Location: AdminSection.php?addVenue=error");
 				exit();
 			}
-		} 
-		else 
-		{
+		} else {
 			// Redirect to AdminSection.php with a validation message
 			header("Location: AdminSection.php?addVenue=empty");
 			exit();
@@ -124,28 +108,22 @@
 				$stmt->bindParam(':adult', $adult);
 
 				// Execute the query
-				if ($stmt->execute()) 
-				{
+				if ($stmt->execute()) {
 					// Redirect to AdminSection.php with a success message
 					header("Location: AdminSection.php?addConcert=success");
 					exit();
-				} 
-				else 
-				{
+				} else {
 					// Redirect to AdminSection.php with an error message
 					header("Location: AdminSection.php?addConcert=error");
 					exit();
 				}
 			} 
-			catch (PDOException $e) 
-			{
+			catch (PDOException $e) {
 				// Redirect to AdminSection.php with an error message
 				header("Location: AdminSection.php?addConcert=error");
 				exit();
 			}
-		} 
-		else 
-		{
+		} else {
 			// Redirect to AdminSection.php with a validation message
 			header("Location: AdminSection.php?addConcert=empty");
 			exit();

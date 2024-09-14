@@ -104,8 +104,7 @@
 		</div>	
 		<?php
 			// Display the confirmation message
-			if ($confirmationMessage) 
-			{
+			if ($confirmationMessage) {
 				echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
 			}
 		?>	

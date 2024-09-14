@@ -120,94 +120,73 @@
 							 <?php
 
 								// Handle deletion
-								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_band_id'])) 
-								{
+								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_band_id'])) {
 									$bandId = intval($_POST['delete_band_id']);
 
-									try 
-									{
+									try {
 										// Check if there are related rows in the `concert` table
 										$stmt = $db->prepare("SELECT COUNT(*) FROM concert WHERE band_id = ?");
 										$stmt->execute([$bandId]);
 										$count = $stmt->fetchColumn();
 
-										if ($count > 0) 
-										{
+										if ($count > 0) {
 											$confirmationMessage = "Cannot delete the band. There are concerts that depend on this band.";
-										} 
-										else 
-										{
+										} else {
 											// No dependencies, proceed with deletion
 											$stmt = $db->prepare("DELETE FROM band WHERE band_id = ?");
 											$stmt->execute([$bandId]);
 
-											if ($stmt->rowCount() > 0) 
-											{
+											if ($stmt->rowCount() > 0) {
 												$confirmationMessage = "Band deleted successfully.";
-											} 
-											else 
-											{
+											} else {
 												$confirmationMessage = "Failed to delete the Band.";
 											}
 										}
 									} 
-									catch (PDOException $e) 
-									{
+									catch (PDOException $e) {
 										$confirmationMessage = "Error: " . $e->getMessage();
 									}
 								}
 																
 								// Handle band name update
-								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_band_id'])) 
-								{
+								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_band_id'])) {
 									$bandId = intval($_POST['update_band_id']);
 									$newBandName = trim($_POST['new_band_name']);
 
-									if (!empty($newBandName)) 
-									{
+									if (!empty($newBandName)) {
 										try 
 										{
 											$stmt = $db->prepare("UPDATE band SET band_name = ? WHERE band_id = ?");
 											$stmt->execute([$newBandName, $bandId]);
 
-											if ($stmt->rowCount() > 0) 
-											{
+											if ($stmt->rowCount() > 0) {
 												$confirmationMessage = "Band name updated successfully.";
-											} 
-											else 
-											{
+											} else {
 												$confirmationMessage = "Failed to update the band name.";
 											}			
 										} 
-										catch (PDOException $e) 
-										{
+										catch (PDOException $e) {
 											$confirmationMessage = "Error: " . $e->getMessage();
 										}
-									} 
-									else 
-									{
+									} else {
 										$confirmationMessage = "Band name cannot be empty.";
 									}
 								}
 
 								// Handle edit button click (to track which band is being edited)
-								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_band_id'])) 
-								{
+								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_band_id'])) {
 									$editBandId = intval($_POST['edit_band_id']);
 								}
 								
 								// Fetch and display bands
 								$result = $db->query("SELECT * FROM band ORDER BY band_id");
 
-								if ($result && $result->rowCount() > 0) 
-								{
+								if ($result && $result->rowCount() > 0) {
 									echo '<ul>';
-									foreach ($result as $row) 
-									{
+									foreach ($result as $row) {
 										echo '<li>';
 										
-										if ($editBandId === intval($row['band_id'])) 
-										{
+										if ($editBandId === intval($row['band_id'])) {
 											echo '<div style="margin-top: 10px;">';
 											echo '<form method="POST">';
 											echo '<input type="hidden" name="update_band_id" value="' . $row['band_id'] . '">';
@@ -217,17 +196,12 @@
 											echo '<button name="update">Save</button>';
 											echo '</form>';
 											echo '</div>';
-										}
-										else
-										{
+										} else {
 											echo '<div class="label">' . htmlspecialchars($row['band_name']) . '</div>';
 										}
 										
-										if ($editBandId === intval($row['band_id'])) 
-										{
-										}
-										else
-										{
+										if ($editBandId === intval($row['band_id'])) {
+										} else {
 											echo '<div class="actions">';
 											
 											// Edit button
@@ -247,9 +221,7 @@
 										echo '</li>';
 									}
 									echo '</ul>';
-								} 
-								else 
-								{
+								} else {
 									echo '<li><div class="label">No bands available</div></li>';
 								}
 							?>
@@ -275,39 +247,30 @@
 							 <?php
 
 								// Handle deletion
-								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_venue_id'])) 
-								{
+								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_venue_id'])) {
 									$venueId = intval($_POST['delete_venue_id']);
 
-									try 
-									{
+									try {
 										// Check if there are related rows in the `concert` table
 										$stmt = $db->prepare("SELECT COUNT(*) FROM concert WHERE venue_id = ?");
 										$stmt->execute([$venueId]);
 										$count = $stmt->fetchColumn();
 
-										if ($count > 0) 
-										{
+										if ($count > 0) {
 											$confirmationMessage = "Cannot delete the venue. There are concerts that depend on this venue.";
-										} 
-										else 
-										{
+										} else {
 											// No dependencies, proceed with deletion
 											$stmt = $db->prepare("DELETE FROM venue WHERE venue_id = ?");
 											$stmt->execute([$venueId]);
 
-											if ($stmt->rowCount() > 0) 
-											{
+											if ($stmt->rowCount() > 0) {
 												$confirmationMessage = "Venue deleted successfully.";
-											} 
-											else 
-											{
+											} else {
 												$confirmationMessage = "Failed to delete the Venue.";
 											}
 										}
 									} 
-									catch (PDOException $e) 
-									{
+									catch (PDOException $e) {
 										$confirmationMessage = "Error: " . $e->getMessage();
 									}
 								}
@@ -356,23 +319,19 @@
 								}
 
 								// Handle edit button click (to track which venue is being edited)
-								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_venue_id'])) 
-								{
+								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_venue_id'])) {
 									$editvenueId = intval($_POST['edit_venue_id']);
 								}
 								
 								// Fetch and display venues
 								$result = $db->query("SELECT * FROM venue ORDER BY venue_id");
 
-								if ($result && $result->rowCount() > 0) 
-								{
+								if ($result && $result->rowCount() > 0) {
 									echo '<ul>';
-									foreach ($result as $row) 
-									{
+									foreach ($result as $row) {
 										echo '<li>';
 										
-										if ($editvenueId === intval($row['venue_id'])) 
-										{
+										if ($editvenueId === intval($row['venue_id'])) {
 											echo '<div style="margin-top: 10px;">';
 											echo '<form method="POST">';
 											echo '<input type="hidden" name="update_venue_id" value="' . $row['venue_id'] . '">';
@@ -383,20 +342,15 @@
 											echo '<button name="update">Save</button>';
 											echo '</form>';
 											echo '</div>';
-										}
-										else
-										{
+										} else {
 											echo '<div class="label">Name: ' . htmlspecialchars($row['venue_name']);
 											echo '<br>';
 											echo 'Capacity: ' . htmlspecialchars($row['capacity']);
 											echo '</div>';
 										}
 										
-										if ($editvenueId === intval($row['venue_id'])) 
-										{
-										}
-										else
-										{
+										if ($editvenueId === intval($row['venue_id'])) {
+										} else {
 											echo '<div class="actions">';
 											
 											// Edit button
@@ -416,9 +370,7 @@
 										echo '</li>';
 									}
 									echo '</ul>';
-								} 
-								else 
-								{
+								} else {
 									echo '<li><div class="label">No venues available</div></li>';
 								}
 							?>
@@ -431,17 +383,13 @@
 					<h2>
 					<?php 
 						// Handle edit button click (to track which band is being edited)
-						if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_concert_id'])) 
-						{
+						if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_concert_id'])) {
 							$editconcertId = intval($_POST['edit_concert_id']);
 						}
-						if ($editconcertId != null) 
-						{
+						if ($editconcertId != null) {
 							echo '<h1>Edit Concert ' . $editconcertId . '</h1>';
 									echo '<hr>';
-						}
-						else
-						{
+						} else {
 							echo '<h1>Add New Concert</h1>';
 									echo '<hr>';
 						}
@@ -453,15 +401,13 @@
 								<option value="" selected disabled>Select a Band</option>
 								 <?php
 									$result = $db->query("Select * FROM band ORDER BY band_id");
-									if ($result && $result->rowCount() > 0) 
-									{
+									if ($result && $result->rowCount() > 0) {
 										// Prepare the SQL statement
 										$stmt = $db->prepare("SELECT * FROM concert WHERE concert_id = ?");
 										$stmt->execute([$editconcertId]);
 										$concertData = $stmt->fetch();
 										
-										foreach ($result as $row)
-										{
+										foreach ($result as $row) {
 											$selected = ($row['band_id'] == $concertData['band_id']) ? 'selected' : '';
 											echo '<option value="'.$row['band_id'].'" '.$selected.'>',$row['band_name'].'</option>';
 										}
@@ -472,10 +418,8 @@
 								<option value=""selected disabled>Select a Venue</option>
 								<?php
 									$result = $db->query("Select * FROM venue ORDER BY venue_id");
-									if ($result && $result->rowCount() > 0) 
-									{
-										foreach ($result as $row)
-										{
+									if ($result && $result->rowCount() > 0) {
+										foreach ($result as $row) {
 											$selected = ($row['venue_id'] == $concertData['venue_id']) ? 'selected' : '';
 											echo '<option value="'.$row['venue_id'].'" '.$selected.'>',$row['venue_name'].'</option>';
 										}
@@ -484,14 +428,11 @@
 							</select>
 							
 							<?php 
-								if ($editconcertId == null) 
-								{
+								if ($editconcertId == null) {
 									echo '<input type="datetime-local" id="concert_date" name="concert_date" required></br>';
 									echo '<input type="checkbox" id="adult" name="adult"> 18+ Only</br>';
 									echo '<button type="submit">Add Concert</button>';
-								}
-								else
-								{
+								} else {
 									echo '<input type="datetime-local" id="concert_date" name="concert_date" value="' . date('Y-m-d\TH:i', strtotime($concertData['concert_date'])) . '" required></br>';
 									echo '<input type="hidden" name="concert_id" value="' . $editconcertId . '">';
 									echo '<input type="checkbox" id="adult" name="adult" value="N" ' . ($concertData['adult'] == 'Y' ? 'checked' : '') . '> 18+ Only<br>';
@@ -506,12 +447,9 @@
                         <center>
                         <h2>
 						<?php 
-							if ($editconcertId == null) 
-							{
+							if ($editconcertId == null) {
 								echo 'Current Concerts';
-							}
-							else
-							{
+							} else {
 							}
 						
 						?>
@@ -520,33 +458,26 @@
                         <ul>
                             <?php
 								// Handle deletion
-								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_concert_id'])) 
-								{
+								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_concert_id'])) {
 									$concertId = intval($_POST['delete_concert_id']);
 
-									try 
-									{
+									try {
 										// Delete the concert record from the database
 										$stmt = $db->prepare("DELETE FROM concert WHERE concert_id = ?");
 										$stmt->execute([$concertId]);
 
-										if ($stmt->rowCount() > 0) 
-										{
+										if ($stmt->rowCount() > 0) {
 											$confirmationMessage = "Concert deleted successfully.";
-										} 
-										else 
-										{
+										} else {
 											$confirmationMessage = "Failed to delete the Concert.";
 										}
 									} 
-									catch (PDOException $e) 
-									{
+									catch (PDOException $e) {
 										$confirmationMessage = "Error: " . $e->getMessage();
 									}
 								}
 
-								if ($editconcertId == null) 
-								{
+								if ($editconcertId == null) {
 									// Fetch and display concert details
 									$result = $db->query("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult, COUNT(j.concert_id) AS tickets_sold
 										FROM concert c
@@ -556,8 +487,7 @@
 										GROUP BY c.concert_id
 										ORDER BY c.concert_date");
 									
-									if ($result && $result->rowCount() > 0) 
-									{
+									if ($result && $result->rowCount() > 0) {
 										
 										foreach ($result as $row) {  
 								
@@ -567,9 +497,7 @@
 											echo '</li>';
 										}
 										echo '</ul>';
-									} 
-									else 
-									{
+									} else {
 										echo '<li><div class="label">No concerts available</div></li>';
 									}
 								}
@@ -581,8 +509,7 @@
         </div>
 			<?php
 				// Display the confirmation message
-				if ($confirmationMessage) 
-				{
+				if ($confirmationMessage) {
 					echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
 				}
 			?>
@@ -653,46 +580,39 @@
 			}
 		});
 		
-		function validateBand() 
-		{
+		function validateBand() {
 			var doc = document.forms["addBandForm"];
 
 			var bandName = doc.bandName.value;
-			if (bandName.length < 1) 
-			{
+			if (bandName.length < 1) {
 				alert("Please add a Band Name.");
 				return false;
 			}
 
 			return true;
 		}
-		function validateVenue() 
-		{
+		function validateVenue() {
 			var doc = document.forms["addVenueForm"];
 
 			var venueName = doc.venueName.value;
-			if (!venueName) 
-			{
+			if (!venueName) {
 				alert("Please add a Venue Name.");
 				return false;
 			}
 
 			return true;
 		}
-		function validateConcert() 
-		{
+		function validateConcert() {
 			var doc = document.forms["addConcertForm"];
 
 			var bandName = doc.bandSelect.value;
-			if (!bandName) 
-			{
+			if (!bandName) {
 				alert("Please add a Band.");
 				return false;
 			}
 			
 			var venueName = doc.venueSelect.value;
-			if (!venueName) 
-			{
+			if (!venueName) {
 				alert("Please add a Venue.");
 				return false;
 			}

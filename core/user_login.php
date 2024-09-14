@@ -28,8 +28,7 @@
 				header('Location: PublicSection.php?login=usererror');
 			}
 		}
-		catch (PDOException $e) 
-		{
+		catch (PDOException $e) {
 			echo 'exception';
 			echo '<pre>';
 			print_r($e);
