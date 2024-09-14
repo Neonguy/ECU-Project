@@ -278,43 +278,36 @@
 								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_venue_id'])) {
 									$venueId = intval($_POST['update_venue_id']);
 									$newvenueName = trim($_POST['new_venue_name']);
-									$venueCapacity = intval($_POST['new_venue_capacity']);
 
 									if (!empty($newvenueName)) {
 
 										// Fetch the highest number of tickets sold for any concert at the venue
-										// Find highest concert booked and use that as threshold for capacity
 										// based on update_venue_id
-										$stmt = $db->prepare("SELECT MAX(tickets_sold) AS max_tickets_sold
-															FROM (SELECT COUNT(j.concert_id) AS tickets_sold
+										$stmt = $db->prepare("SELECT COUNT(j.concert_id) AS tickets_sold
 																FROM concert c
 																JOIN venue v ON c.venue_id = v.venue_id
 																LEFT JOIN booking j ON c.concert_id = j.concert_id
 																WHERE c.venue_id = ?
-																GROUP BY c.concert_id) AS subquery");
+																GROUP BY c.concert_id");
 															
 										$stmt->execute([$venueId]);
 										$result = $stmt->fetch();
-										$maxTicketsSold = $result['max_tickets_sold'];
 										
-										// check venue capacity to ensure venue wasnt overbooked (advanced)
-										if ($venueCapacity >= $maxTicketsSold) {
-											try {
-												// now call venue to alter
-												$stmt = $db->prepare("UPDATE venue SET venue_name = ?, capacity = ? WHERE venue_id = ?");
-												$stmt->execute([$newvenueName, $venueCapacity, $venueId]);
+										try {
+											// now call venue to alter
+											$stmt = $db->prepare("UPDATE venue SET venue_name = ? WHERE venue_id = ?");
+											$stmt->execute([$newvenueName, $venueId]);
 
-												if ($stmt->rowCount() > 0) {
-													$confirmationMessage = "Venue updated successfully.";
-												} else {
-													$confirmationMessage = "Failed to update the Venue.";
-												}            
-											} catch (PDOException $e) {
-												$confirmationMessage = "Error: " . $e->getMessage();
-											}
+											if ($stmt->rowCount() > 0) {
+												$confirmationMessage = "Venue updated successfully.";
+											} else {
+												$confirmationMessage = "Failed to update the Venue.";
+											}            
+										} catch (PDOException $e) {
+											$confirmationMessage = "Error: " . $e->getMessage();
 										}
 									} else {
-										$confirmationMessage = "Venue name cannot be empty and capacity must be positive.";
+										$confirmationMessage = "Venue name cannot be empty.";
 									}
 								}
 
@@ -336,7 +329,6 @@
 											echo '<form method="POST">';
 											echo '<input type="hidden" name="update_venue_id" value="' . $row['venue_id'] . '">';
 											echo 'Name: <input type="text" name="new_venue_name" placeholder="New venue Name" value="' . htmlspecialchars($row['venue_name']) . '">';
-											echo 'Capacity: <input type="int" name="new_venue_capacity" placeholder="New venue Capacity" value="' . htmlspecialchars($row['capacity']) . '">';
 											echo '</div>';
 											echo '<div class="actions">';
 											echo '<button name="update">Save</button>';
@@ -345,7 +337,6 @@
 										} else {
 											echo '<div class="label">Name: ' . htmlspecialchars($row['venue_name']);
 											echo '<br>';
-											echo 'Capacity: ' . htmlspecialchars($row['capacity']);
 											echo '</div>';
 										}
 										
@@ -479,7 +470,7 @@
 
 								if ($editconcertId == null) {
 									// Fetch and display concert details
-									$result = $db->query("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult, COUNT(j.concert_id) AS tickets_sold
+									$result = $db->query("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult, COUNT(j.concert_id) AS tickets_sold
 										FROM concert c
 										JOIN band b ON c.band_id = b.band_id
 										JOIN venue v ON c.venue_id = v.venue_id
