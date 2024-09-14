@@ -44,7 +44,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`username`, `password`) VALUES
 ('Sebbs', '12345678');
-('admin', 'admin!');
+('admin', 'admin');
 
 -- --------------------------------------------------------
 
