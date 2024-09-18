@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 30, 2024 at 01:12 AM
+-- Generation Time: Sep 18, 2024 at 06:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `csg2431: interactive web development`
+-- Database: `csg2431: interactive web development (core)`
 --
-CREATE DATABASE IF NOT EXISTS `csg2431: interactive web development (Core)` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `csg2431: interactive web development (Core)`;
+CREATE DATABASE IF NOT EXISTS `csg2431: interactive web development (core)` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `csg2431: interactive web development (core)`;
 
 -- --------------------------------------------------------
 
@@ -43,8 +43,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`username`, `password`) VALUES
+('admin', 'admin'),
 ('Sebbs', '12345678');
-('admin', 'admin');
 
 -- --------------------------------------------------------
 
@@ -78,7 +78,7 @@ INSERT INTO `attendee` (`mobile_number`, `first_name`, `surname`, `password`, `d
 ('0405896324', 'Sarah', 'Collier', '12345678', '2024-09-28'),
 ('0406649884', 'Rachel', 'Stark', '12345678', '2024-09-28'),
 ('0407788149', 'Jessica', 'Bell', '12345678', '2024-09-28'),
-('0413062102', 'David', 'Denholm', '12345678', '2013-07-26'),
+('0413062101', 'David', 'Denholm', '12345678', '1983-07-17'),
 ('0413062201', 'Test', 'User', '12345678', '1983-07-17');
 
 -- --------------------------------------------------------
@@ -137,15 +137,11 @@ CREATE TABLE `booking` (
 --
 
 INSERT INTO `booking` (`booking_id`, `mobile_number`, `concert_id`) VALUES
-(1, '0402449784', 11),
-(48, '0413062101', 22),
-(58, '0413062101', 11),
-(73, '0413062102', 15),
-(74, '0413062102', 18),
-(75, '0413062102', 16),
-(76, '0413062102', 12),
-(77, '0413062101', 18),
-(79, '0413062201', 15);
+(3, '0413062101', 16),
+(4, '0413062101', 17),
+(5, '0413062101', 13),
+(6, '0413062101', 12),
+(7, '0413062101', 11);
 
 -- --------------------------------------------------------
 
@@ -174,8 +170,6 @@ CREATE TABLE `concert` (
 --
 
 INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`, `adult`) VALUES
-(9, 15, 7, '2024-08-28 22:00:00', 'Y'),
-(10, 15, 7, '2024-09-03 22:00:00', 'Y'),
 (11, 15, 7, '2024-09-29 22:00:00', 'Y'),
 (12, 16, 5, '2024-11-02 21:30:00', 'N'),
 (13, 18, 6, '2024-11-22 20:00:00', 'N'),
@@ -266,13 +260,13 @@ ALTER TABLE `venue`
 -- AUTO_INCREMENT for table `band`
 --
 ALTER TABLE `band`
-  MODIFY `band_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `band_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `booking_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `booking_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `concert`
@@ -284,7 +278,7 @@ ALTER TABLE `concert`
 -- AUTO_INCREMENT for table `venue`
 --
 ALTER TABLE `venue`
-  MODIFY `venue_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `venue_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 05, 2024 at 05:41 PM
+-- Generation Time: Sep 18, 2024 at 06:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `csg2431: interactive web development(Advanced)`
+-- Database: `csg2431: interactive web development (advanced)`
 --
-CREATE DATABASE IF NOT EXISTS `csg2431: interactive web development (Advanced)` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `csg2431: interactive web development (Advanced)`;
+CREATE DATABASE IF NOT EXISTS `csg2431: interactive web development (advanced)` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `csg2431: interactive web development (advanced)`;
 
 -- --------------------------------------------------------
 
@@ -43,8 +43,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`username`, `password`) VALUES
-('Sebbs', '$2y$10$cS6Wlz5RcYv2oKGqBOpPBOMujDE09GzDNVDyHw8eMjPBxFhKxLAEm'),
-('admin', '$2a$12$isX/D7vYAwMW6s1JhIkhv.f6xrcuJgoS5r1pC8RTtOuNvq33cfuci');
+('admin', '$2a$12$isX/D7vYAwMW6s1JhIkhv.f6xrcuJgoS5r1pC8RTtOuNvq33cfuci'),
+('Sebbs', '$2y$10$cS6Wlz5RcYv2oKGqBOpPBOMujDE09GzDNVDyHw8eMjPBxFhKxLAEm');
 
 -- --------------------------------------------------------
 
@@ -102,7 +102,6 @@ CREATE TABLE `band` (
 --
 
 INSERT INTO `band` (`band_id`, `band_name`) VALUES
-(28, '12124'),
 (19, 'Baby Animals'),
 (16, 'Birds of Tokyo'),
 (18, 'Eskimo Joe'),
@@ -139,14 +138,13 @@ CREATE TABLE `booking` (
 
 INSERT INTO `booking` (`booking_id`, `mobile_number`, `concert_id`) VALUES
 (1, '0402449784', 11),
-(48, '0413062101', 22),
 (58, '0413062101', 11),
 (73, '0413062102', 15),
 (74, '0413062102', 18),
 (75, '0413062102', 16),
 (76, '0413062102', 12),
-(77, '0413062101', 18),
-(79, '0413062201', 15);
+(79, '0413062201', 15),
+(82, '0413062101', 22);
 
 -- --------------------------------------------------------
 
@@ -183,7 +181,8 @@ INSERT INTO `concert` (`concert_id`, `band_id`, `venue_id`, `concert_date`, `adu
 (15, 14, 5, '2024-10-18 10:10:00', 'N'),
 (16, 16, 5, '2024-11-01 20:21:00', 'N'),
 (18, 14, 5, '2024-10-05 20:20:00', 'N'),
-(22, 15, 9, '2024-12-01 22:00:00', 'Y');
+(22, 15, 9, '2024-12-01 22:00:00', 'Y'),
+(23, 14, 5, '2024-09-15 20:20:00', 'N');
 
 -- --------------------------------------------------------
 
@@ -272,19 +271,19 @@ ALTER TABLE `band`
 -- AUTO_INCREMENT for table `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `booking_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `booking_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
 
 --
 -- AUTO_INCREMENT for table `concert`
 --
 ALTER TABLE `concert`
-  MODIFY `concert_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `concert_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `venue`
 --
 ALTER TABLE `venue`
-  MODIFY `venue_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `venue_id` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
