@@ -7,7 +7,9 @@
 	if (isset($_GET['status'])) {
 		if ($_GET['status'] == 'success') {
 			$confirmationMessage = 'Registration Successful.';
-		} elseif ($_GET['status'] == 'error') {
+		} elseif ($_GET['status'] == 'error1') {
+			$confirmationMessage = 'Registration Failed, User already exists.';
+		} elseif ($_GET['status'] == 'error2') {
 			$confirmationMessage = 'Registration Failed.';
 		} elseif ($_GET['status'] == 'empty') {
 			$confirmationMessage = 'Please fill in all required fields.';
@@ -64,7 +66,7 @@
 		<?php
 			// Display the confirmation message
 			if ($confirmationMessage) {
-				echo '<p style="margin-top: 20px;">' . htmlspecialchars($confirmationMessage) . '</p>';
+				echo '<p style="margin-top: 20px;">' . ($confirmationMessage) . '</p>';
 			}
 		?>
 	</center>

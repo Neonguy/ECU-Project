@@ -20,23 +20,24 @@
 			$bookingsCount = $existingBookings->fetchColumn();
 							
 			if ($bookingsCount < $maxBookings) {
+				if (!in_array($_POST['make_booking_id'], $bookedConcertIds)) {
 				
-				// No dependencies, proceed with deletion
-				$stmt = $db->prepare("INSERT INTO booking (mobile_number, concert_id) VALUES (:mobile_number, :concert_id)");
-				$stmt->bindParam(':mobile_number', $_SESSION['mobile']);
-				$stmt->bindParam(':concert_id', $concertId);
-				$stmt->execute();
-				
-				if ($stmt->rowCount() > 0) {
-					header('Location: AttendeeSection.php?book=success');
-				} 
-				else 
-				{
-					header('Location: AttendeeSection.php?book=failed');
+					// No dependencies, proceed with deletion
+					$stmt = $db->prepare("INSERT INTO booking (mobile_number, concert_id) VALUES (:mobile_number, :concert_id)");
+					$stmt->bindParam(':mobile_number', $_SESSION['mobile']);
+					$stmt->bindParam(':concert_id', $concertId);
+					$stmt->execute();
+					
+					if ($stmt->rowCount() > 0) {
+						header('Location: AttendeeSection.php?book=success');
+					} else {
+						header('Location: AttendeeSection.php?book=failed');
+					}
+				} else {
+					header('Location: AttendeeSection.php?book=doublebooking');
+					
 				}
-			}
-			else
-			{
+			} else {
 				header('Location: AttendeeSection.php?book=overbooked');
 			}
 		}
@@ -54,15 +55,13 @@
 		try 
 		{
 			// No dependencies, proceed with deletion
-			$stmt = $db->prepare("DELETE FROM booking WHERE booking_id = ?");
-			$stmt->execute([$bookingID]);
+			$stmt = $db->prepare("DELETE FROM booking WHERE booking_id = ? AND mobile_number = ?");
+			$stmt->execute([$bookingID, $_SESSION['mobile']]);
 
 			if ($stmt->rowCount() > 0) 
 			{
 				header('Location: AttendeeSection.php?delete=success');
-			} 
-			else 
-			{
+			} else {
 				header('Location: AttendeeSection.php?delete=failed');
 			}
 		}

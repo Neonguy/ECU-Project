@@ -13,6 +13,33 @@
 		echo $e->getMessage();
 		exit;
 	} 
+	
+	if (isset($_SESSION['mobile'])) {
+		// get bookings by mobile number
+		$bookings = $db->prepare("SELECT a.booking_id, a.mobile_number, a.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, c.concert_date, c.adult
+			FROM booking a
+			JOIN concert c ON a.concert_id = c.concert_id
+			JOIN band b ON c.band_id = b.band_id
+			JOIN venue v ON c.venue_id = v.venue_id
+			WHERE a.mobile_number = ?");
+		$bookings->execute([$_SESSION['mobile']]);
+		
+		// this got messy calling the function to get ids...
+		// leave this part alone, we need to fetch all here
+		$allBookings = $bookings->fetchAll();	
+
+		$bookedConcertIds = [];
+		foreach ($allBookings as $row) {
+			$concertDate = new DateTime($row['concert_date']);
+			$current_date = new DateTime();
+			
+			// Check if the concert date is in the past or today
+			if ($concertDate >= $current_date) {
+				$bookedConcertIds[] = $row['concert_id'];
+			}
+		}
+	}
+	
 	// Fetch and display concert details
 	$displayConcerts = $db->query ("SELECT c.concert_id, c.band_id, b.band_name, c.venue_id, v.venue_name, v.capacity, c.concert_date, c.adult, COUNT(j.concert_id) AS tickets_sold
 						FROM concert c
@@ -85,11 +112,12 @@
 			}
 		} 
 	}
-	function displayBookingButton($concert,$bookedConcertIds) {
+	function displayBookingButton($concert) {
 		if ($concert) {
 			
 			// bring the max bookings into a usable state
 			global $maxBookings;
+			global $bookedConcertIds;
 	
 			$concertDate = new DateTime($concert['concert_date']);
 			$current_date = new DateTime();

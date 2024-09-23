@@ -10,6 +10,8 @@
 	if (isset($_GET['book'])) {
 		if ($_GET['book'] == 'success') {
 			$confirmationMessage = 'Add Booking Successful.';
+		} elseif ($_GET['book'] == 'doublebooking') {
+			$confirmationMessage = 'Add Booking Failed, already booked.';
 		} elseif ($_GET['book'] == 'failed') {
 			$confirmationMessage = 'Add Booking Failed.';
 		} elseif ($_GET['book'] == 'overbooked') {
@@ -134,9 +136,7 @@
 								displayBookingButton($row,$bookedConcertIds);
 							}
 							echo '</ul>';
-						}
-						else 
-						{
+						} else {
 							echo '<li><div class="label">No concerts available</div></li>';
 						} 
 					?>
