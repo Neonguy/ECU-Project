@@ -32,13 +32,13 @@
 					exit();
 				} else {
 					// Redirect to RegistrationForm.php with an error message
-					header("Location: RegistrationForm.php?status=error");
+					header("Location: RegistrationForm.php?status=error1");
 					exit();
 				}
 			} 
 			catch (PDOException $e) {
 				// Redirect to RegistrationForm.php with an error message
-				header("Location: RegistrationForm.php?status=error");
+				header("Location: RegistrationForm.php?status=error2");
 				exit();
 			}
 		} else {

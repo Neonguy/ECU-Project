@@ -69,7 +69,7 @@
 
 	<div class="container">
 		<center>
-		<h2>Please log In</h2>
+		<h1>Please log In</h1>
 					
 		<form id="login" method="post" action="admin_login.php">
 			<fieldset class="fieldset">
