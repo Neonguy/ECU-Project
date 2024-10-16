@@ -54,6 +54,7 @@
 	if ($_POST && isset($_POST['venueName'])) {
 		// Get the venue name from the form
 		$venueName = trim($_POST['venueName']);
+		$venueCapacity = $_POST['new_venue_capacity'];
 
 		// Check if the venue name is not empty
 		if (!empty($venueName)) 
@@ -61,13 +62,14 @@
 			try 
 			{
 				// Prepare the SQL statement to insert the venue name
-				$stmt = $db->prepare("INSERT INTO venue (venue_name) VALUES (:venue_name)");
+				$stmt = $db->prepare("INSERT INTO venue (venue_name, capacity) VALUES (:venue_name, :capacity)");
 
 				// Bind the parameter to the SQL query
 				$stmt->bindParam(':venue_name', $venueName);
+				$stmt->bindParam(':capacity', $venueCapacity);
 
 				// Execute the query
-				if ($stmt->execute()) 
+				if ($stmt->execute())
 				{
 					// Redirect to AdminSection.php with a success message
 					header("Location: AdminSection.php?addVenue=success");

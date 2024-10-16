@@ -235,6 +235,8 @@
 					<hr>
                         <form id="addVenueForm" method="post" action="ProcessAdmin.php" onsubmit="return validateVenue()">
                             <input type="text" id="venueName" name="venueName" placeholder="Venue Name">
+							<input type="int" name="new_venue_capacity" placeholder="New venue Capacity">
+							<br/>
                             <button type="submit">Add Venue</button>
                         </form>
                         </center>
@@ -245,7 +247,6 @@
                         </center>
                         <ul>
 							 <?php
-
 								// Handle deletion
 								if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_venue_id'])) {
 									$venueId = intval($_POST['delete_venue_id']);
@@ -280,7 +281,7 @@
 									$newvenueName = trim($_POST['new_venue_name']);
 									$venueCapacity = intval($_POST['new_venue_capacity']);
 
-									if (!empty($newvenueName)) {
+									if (!empty($newvenueName) && $venueCapacity >= 0) {
 
 										// Fetch the highest number of tickets sold for any concert at the venue
 										// Find highest concert booked and use that as threshold for capacity
@@ -312,9 +313,11 @@
 											} catch (PDOException $e) {
 												$confirmationMessage = "Error: " . $e->getMessage();
 											}
+										} else {
+											$confirmationMessage = "Capacity is less than sold tickets. Check capacity.";
 										}
 									} else {
-										$confirmationMessage = "Venue name cannot be empty and capacity must be positive.";
+										$confirmationMessage = "Venue name cannot be empty and Capacity >= 0";
 									}
 								}
 
@@ -595,8 +598,13 @@
 			var doc = document.forms["addVenueForm"];
 
 			var venueName = doc.venueName.value;
+			var venueCapacity = doc.new_venue_capacity.value;
 			if (!venueName) {
 				alert("Please add a Venue Name.");
+				return false;
+			}
+			if (!venueCapacity || venueCapacity < 0) {
+				alert("Please add a Venue Capacity > 0.");
 				return false;
 			}
 
